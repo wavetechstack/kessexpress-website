@@ -1,0 +1,41 @@
+Updated Prompt for Replit:
+
+"Build a modern, responsive website for a tech company called 'KessExpress.' The company started as an e-commerce retailer in 2018 but later transitioned to selling exclusively through Amazon. Now, it has expanded into a full-scale IT service provider and requires a website to showcase its offerings and allow clients to book consultations. The website should be visually appealing, user-friendly, and optimized for both desktop and mobile. It must have the following key sections and functionalities:
+
+Website Structure & Pages:
+Homepage
+
+Engaging hero section with a brief company overview.
+Call-to-action (CTA) buttons for "Learn More" and "Book a Consultation."
+Testimonials and statistics highlighting business success.
+About Us
+
+Company history, evolution from e-commerce to IT services.
+Founder’s vision and mission statement.
+Services Page (Detailed breakdown)
+
+Analytics & Business Intelligence: Unlock the power of data.
+Cybersecurity: Advanced protection against complex threats.
+Data Platform Services: Scalable solutions for analytics & AI.
+Data Center Solutions: On-premises, cloud & hybrid options.
+Managed Services: 24/7 IT support.
+Managed Security Services: 24/7 cybersecurity & threat monitoring.
+Networking: Scalable, robust network solutions.
+E-Commerce Solutions: Warehousing, D2C, B2B, Amazon, Walmart, eBay scaling.
+Consultation Booking Page
+
+Integrated scheduling system (e.g., Calendly, HubSpot, or custom form).
+Simple form to capture client details.
+Contact Page
+
+Contact form for inquiries.
+Business email and phone number.
+Google Maps integration (optional).
+Technical Requirements:
+Framework: React.js (or Next.js for SEO optimization) or simple HTML/CSS/JS for a static website.
+Styling: TailwindCSS or Bootstrap for a modern UI.
+Hosting: Deployable on Vercel, Netlify, or AWS.
+Domain Integration: Use the provided domain, KessExpress.com, and configure DNS records for proper hosting setup.
+Form Handling: Backend API or third-party service for booking and contact forms.
+Optional CMS: If dynamic content is needed, use Strapi, Sanity, or WordPress.
+Ensure a sleek, professional UI that aligns with a tech company’s brand identity. The primary goal is to educate potential clients on services and drive consultation bookings. Provide a clean, intuitive design with easy navigation. After completing the website, assist in connecting it to the domain, including instructions or automation for setting up DNS records."
