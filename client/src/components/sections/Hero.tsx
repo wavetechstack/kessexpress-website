@@ -17,16 +17,35 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative min-h-[600px] overflow-hidden">
+      {/* Circuit board pattern overlay */}
+      <div className="absolute inset-0 z-10 opacity-10">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <pattern id="circuit" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+            <path
+              d="M10 10h30v30h-30z M15 25h20 M25 15v20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="0.5"
+              className="text-blue-200"
+            />
+            <circle cx="25" cy="25" r="1" className="fill-blue-200" />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#circuit)" />
+        </svg>
+      </div>
+
       {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 animate-gradient-x"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-900 animate-gradient-x">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.3)_100%)]" />
+      </div>
 
       {/* Particles overlay */}
       <Particles
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
-        className="absolute inset-0 z-10"
+        className="absolute inset-0 z-20"
         options={{
           fullScreen: false,
           background: {
@@ -43,7 +62,7 @@ export default function Hero() {
               color: "#ffffff",
               distance: 150,
               enable: true,
-              opacity: 0.3,
+              opacity: 0.2,
               width: 1,
             },
             move: {
@@ -52,7 +71,7 @@ export default function Hero() {
                 default: "bounce",
               },
               random: false,
-              speed: 2,
+              speed: 1,
               straight: false,
             },
             number: {
@@ -60,23 +79,23 @@ export default function Hero() {
                 enable: true,
                 area: 800,
               },
-              value: 80,
+              value: 60,
             },
             opacity: {
-              value: 0.5,
+              value: 0.3,
             },
             shape: {
               type: "circle",
             },
             size: {
-              value: { min: 1, max: 3 },
+              value: { min: 1, max: 2 },
             },
           },
           detectRetina: true,
         }}
       />
 
-      <div className="max-w-7xl mx-auto relative z-20">
+      <div className="relative z-30 max-w-7xl mx-auto">
         <div className="relative pb-8 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
           <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 lg:mt-16 lg:px-8 xl:mt-28">
             <div className="sm:text-center lg:text-left">
@@ -87,7 +106,9 @@ export default function Hero() {
               >
                 <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
                   <span className="block">Transform Your</span>
-                  <span className="block text-blue-200">Digital Future</span>
+                  <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-indigo-200 animate-pulse">
+                    Digital Future
+                  </span>
                 </h1>
                 <p className="mt-3 text-base text-gray-100 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
                   With nearly a decade of excellence in both e-commerce and IT solutions, KessExpress delivers cutting-edge technology services that power your business growth.
@@ -102,7 +123,10 @@ export default function Hero() {
               >
                 <div className="rounded-md shadow">
                   <Link href="/consultation">
-                    <Button size="lg" className="w-full bg-white text-blue-600 hover:bg-blue-50">
+                    <Button 
+                      size="lg" 
+                      className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white"
+                    >
                       Book a Consultation
                     </Button>
                   </Link>
@@ -122,9 +146,6 @@ export default function Hero() {
             </div>
           </main>
         </div>
-      </div>
-      <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-        <div className="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full bg-gradient-to-l from-blue-900/50 to-transparent"></div>
       </div>
     </div>
   );
