@@ -14,8 +14,9 @@ export default function ServiceCard({ title, description, icon }: ServiceCardPro
     <motion.div
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.2 }}
+      className="h-full"
     >
-      <Card className="hover:shadow-lg transition-shadow h-full">
+      <Card className="hover:shadow-lg transition-shadow h-full flex flex-col">
         <CardHeader>
           <motion.div
             whileHover={{ rotate: 360 }}
@@ -27,7 +28,7 @@ export default function ServiceCard({ title, description, icon }: ServiceCardPro
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="mt-auto pt-6">
           <Link href="/consultation">
             <motion.div
               whileHover={{ scale: 1.05 }}
