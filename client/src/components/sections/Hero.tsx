@@ -7,14 +7,20 @@ export default function Hero() {
     <div className="relative overflow-hidden">
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 animate-gradient-x">
-        {/* SVG Pattern Overlay */}
-        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        {/* Circuit Pattern Overlay */}
+        <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="dot-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.3)" className="animate-float" />
+            <pattern id="circuit-pattern" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+              {/* Circuit lines */}
+              <path d="M10 10h30v30h-30z" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="0.5" className="animate-pulse"/>
+              <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.5)" className="animate-ping"/>
+              <circle cx="40" cy="40" r="2" fill="rgba(255,255,255,0.5)" className="animate-ping"/>
+              <path d="M10 10l30 30M40 10l-30 30" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" className="animate-pulse"/>
+              {/* Connection nodes */}
+              <circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.8)" className="animate-ping"/>
             </pattern>
           </defs>
-          <rect x="0" y="0" width="100%" height="100%" fill="url(#dot-pattern)" className="animate-float" />
+          <rect x="0" y="0" width="100%" height="100%" fill="url(#circuit-pattern)"/>
         </svg>
       </div>
 
@@ -51,7 +57,11 @@ export default function Hero() {
                 </div>
                 <div className="mt-3 sm:mt-0 sm:ml-3">
                   <Link href="/services">
-                    <Button variant="outline" size="lg" className="w-full text-white border-white hover:bg-white/10">
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="w-full text-white border-white bg-transparent hover:bg-white/10"
+                    >
                       Learn More
                     </Button>
                   </Link>
