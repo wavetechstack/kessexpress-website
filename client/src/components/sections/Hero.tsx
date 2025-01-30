@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { useCallback } from "react";
-import Particles from "@tsparticles/react";
+import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import type { Engine } from "tsparticles-engine";
 
@@ -27,6 +27,27 @@ export default function Hero() {
             },
           },
           fpsLimit: 120,
+          interactivity: {
+            events: {
+              onClick: {
+                enable: true,
+                mode: "push",
+              },
+              onHover: {
+                enable: true,
+                mode: "repulse",
+              },
+            },
+            modes: {
+              push: {
+                quantity: 4,
+              },
+              repulse: {
+                distance: 100,
+                duration: 0.4,
+              },
+            },
+          },
           particles: {
             color: {
               value: "#ffffff",
@@ -35,8 +56,11 @@ export default function Hero() {
               color: "#ffffff",
               distance: 150,
               enable: true,
-              opacity: 0.2,
+              opacity: 0.3,
               width: 1,
+            },
+            collisions: {
+              enable: true,
             },
             move: {
               direction: "none",
@@ -45,18 +69,18 @@ export default function Hero() {
                 default: "bounce",
               },
               random: false,
-              speed: 1,
+              speed: 2,
               straight: false,
             },
             number: {
               density: {
                 enable: true,
-                area: 800,
+                value_area: 800,
               },
               value: 80,
             },
             opacity: {
-              value: 0.3,
+              value: 0.5,
             },
             shape: {
               type: "circle",
