@@ -2,17 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { useCallback } from "react";
-import type { Container, Engine } from "tsparticles-engine";
+import { Container, Engine } from "tsparticles-engine";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
 export default function Hero() {
   const particlesInit = useCallback(async (engine: Engine) => {
+    console.log("Initializing particles...");
     await loadFull(engine);
   }, []);
 
   const particlesLoaded = useCallback(async (container: Container | undefined) => {
-    // console.log(container);
+    console.log("Particles loaded", container);
   }, []);
 
   return (
@@ -25,34 +26,15 @@ export default function Hero() {
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
+        className="absolute inset-0 z-10"
         options={{
+          fullScreen: false,
           background: {
             color: {
               value: "transparent",
             },
           },
           fpsLimit: 120,
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              onHover: {
-                enable: true,
-                mode: "repulse",
-              },
-            },
-            modes: {
-              push: {
-                quantity: 4,
-              },
-              repulse: {
-                distance: 100,
-                duration: 0.4,
-              },
-            },
-          },
           particles: {
             color: {
               value: "#ffffff",
@@ -64,11 +46,7 @@ export default function Hero() {
               opacity: 0.3,
               width: 1,
             },
-            collisions: {
-              enable: true,
-            },
             move: {
-              direction: "none",
               enable: true,
               outModes: {
                 default: "bounce",
@@ -80,7 +58,7 @@ export default function Hero() {
             number: {
               density: {
                 enable: true,
-                value_area: 800,
+                area: 800,
               },
               value: 80,
             },
@@ -96,7 +74,6 @@ export default function Hero() {
           },
           detectRetina: true,
         }}
-        className="absolute inset-0 z-10"
       />
 
       <div className="max-w-7xl mx-auto relative z-20">
