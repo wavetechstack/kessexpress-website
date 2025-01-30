@@ -126,9 +126,9 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
               >
-                <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl leading-tight">
+                <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl leading-[1.15] pb-1">
                   <span className="block mb-2">Transform Your</span>
-                  <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-indigo-200 animate-pulse">
+                  <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-indigo-200 animate-pulse pb-1">
                     Digital Future
                   </span>
                 </h1>
