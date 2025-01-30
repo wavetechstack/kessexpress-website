@@ -2,13 +2,17 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { useCallback } from "react";
+import type { Container, Engine } from "tsparticles-engine";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
-import type { Engine } from "tsparticles-engine";
 
 export default function Hero() {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
+  }, []);
+
+  const particlesLoaded = useCallback(async (container: Container | undefined) => {
+    // console.log(container);
   }, []);
 
   return (
@@ -20,6 +24,7 @@ export default function Hero() {
       <Particles
         id="tsparticles"
         init={particlesInit}
+        loaded={particlesLoaded}
         options={{
           background: {
             color: {
