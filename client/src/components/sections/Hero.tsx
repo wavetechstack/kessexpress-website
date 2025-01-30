@@ -3,8 +3,8 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { useCallback } from "react";
 import Particles from "@tsparticles/react";
+import { type Engine } from "@tsparticles/engine";
 import { loadFull } from "tsparticles";
-import type { Engine } from "tsparticles-engine";
 
 export default function Hero() {
   const particlesInit = useCallback(async (engine: Engine) => {
@@ -12,16 +12,16 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden min-h-[calc(100vh-4rem)]">
       {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 animate-gradient-x"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-primary to-blue-600 animate-gradient-x opacity-90"></div>
 
       {/* Particles overlay */}
       <Particles
         id="tsparticles"
         init={particlesInit}
         options={{
-          fullScreen: false,
+          fullScreen: { enable: false },
           background: {
             color: {
               value: "transparent",
@@ -29,58 +29,15 @@ export default function Hero() {
           },
           fpsLimit: 120,
           particles: {
-            color: {
-              value: "#ffffff",
-              animation: {
-                enable: true,
-                speed: 20,
-                sync: true
-              }
-            },
-            links: {
-              color: "#ffffff",
-              distance: 150,
-              enable: true,
-              opacity: 0.4,
-              width: 1,
-              triangles: {
-                enable: true,
-                opacity: 0.05
-              }
-            },
-            collisions: {
-              enable: true,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 2,
-              straight: false,
-              attract: {
-                enable: true,
-                rotateX: 600,
-                rotateY: 1200
-              }
-            },
             number: {
+              value: 100,
               density: {
                 enable: true,
-                area: 800,
-              },
-              value: 100,
-            },
-            opacity: {
-              value: 0.5,
-              animation: {
-                enable: true,
-                speed: 3,
-                minimumValue: 0.1,
-                sync: false
+                area: 800
               }
+            },
+            color: {
+              value: ["#ffffff", "#00f2fe", "#4facfe"]
             },
             shape: {
               type: ["circle", "triangle", "polygon"],
@@ -90,17 +47,55 @@ export default function Hero() {
                 }
               }
             },
-            size: {
-              value: { min: 1, max: 3 },
-              animation: {
+            opacity: {
+              value: 0.6,
+              random: true,
+              anim: {
                 enable: true,
-                speed: 2,
-                minimumValue: 0.1,
+                speed: 1,
+                opacity_min: 0.1,
                 sync: false
               }
             },
+            size: {
+              value: { min: 1, max: 3 },
+              random: true,
+              anim: {
+                enable: true,
+                speed: 2,
+                size_min: 0.1,
+                sync: false
+              }
+            },
+            links: {
+              enable: true,
+              distance: 150,
+              color: "#ffffff",
+              opacity: 0.4,
+              width: 1,
+              triangles: {
+                enable: true,
+                opacity: 0.1
+              }
+            },
+            move: {
+              enable: true,
+              speed: 3,
+              direction: "none",
+              random: false,
+              straight: false,
+              outMode: "bounce",
+              attract: {
+                enable: true,
+                rotate: {
+                  x: 600,
+                  y: 1200
+                }
+              }
+            }
           },
           interactivity: {
+            detect_on: "canvas",
             events: {
               onHover: {
                 enable: true,
@@ -110,7 +105,10 @@ export default function Hero() {
                 enable: true,
                 mode: "push"
               },
-              resize: true
+              resize: {
+                enable: true,
+                density_auto: true
+              }
             },
             modes: {
               grab: {
