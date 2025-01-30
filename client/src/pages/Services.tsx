@@ -56,16 +56,37 @@ const services = [
 ];
 
 export default function Services() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
+
   return (
-    <div className="pt-16">
+    <div className="pt-16 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl">
+          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">
             Our Services
           </h1>
           <p className="mt-4 text-xl text-gray-500">
@@ -73,39 +94,66 @@ export default function Services() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+        >
           {services.map((service, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              variants={itemVariants}
+              whileHover={{ scale: 1.02 }}
+              className="h-full"
             >
-              <Card className="h-full">
+              <Card className="h-full transform transition-all duration-300 hover:shadow-xl">
                 <CardHeader>
-                  <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
+                  <motion.div
+                    whileHover={{ rotate: 360, scale: 1.2 }}
+                    transition={{ duration: 0.5 }}
+                    className="w-12 h-12 flex items-center justify-center rounded-lg bg-primary/10 text-primary mb-4"
+                  >
                     {service.icon}
-                  </div>
-                  <CardTitle>{service.title}</CardTitle>
+                  </motion.div>
+                  <CardTitle className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                    {service.title}
+                  </CardTitle>
                   <CardDescription>{service.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ul className="mt-4 space-y-2">
                     {service.features.map((feature, i) => (
-                      <li key={i} className="flex items-center text-sm text-gray-500">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary mr-2"></div>
+                      <motion.li
+                        key={i}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                        className="flex items-center text-sm text-gray-500"
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.5 }}
+                          className="w-1.5 h-1.5 rounded-full bg-primary mr-2"
+                        />
                         {feature}
-                      </li>
+                      </motion.li>
                     ))}
                   </ul>
                   <Link href="/consultation">
-                    <Button className="w-full mt-6">Get Started</Button>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button className="w-full mt-6 bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-primary transition-all duration-300">
+                        Get Started
+                      </Button>
+                    </motion.div>
                   </Link>
                 </CardContent>
               </Card>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
