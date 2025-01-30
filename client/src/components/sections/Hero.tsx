@@ -84,7 +84,7 @@ export default function Hero() {
                   <span className="block text-blue-200">Digital Future</span>
                 </h1>
                 <p className="mt-3 text-base text-gray-100 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                  From e-commerce excellence to comprehensive IT solutions, KessExpress delivers cutting-edge technology services to power your business growth.
+                  With nearly a decade of excellence in both e-commerce and IT solutions, KessExpress delivers cutting-edge technology services that power your business growth.
                 </p>
               </motion.div>
 
