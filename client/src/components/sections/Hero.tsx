@@ -2,13 +2,17 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { useCallback } from "react";
-import { Engine } from "@tsparticles/engine";
+import type { Engine } from "@tsparticles/engine";
 import Particles from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 
 export default function Hero() {
   const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
+    try {
+      await loadSlim(engine);
+    } catch (error) {
+      console.error("Failed to initialize particles:", error);
+    }
   }, []);
 
   return (
