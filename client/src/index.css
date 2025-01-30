@@ -40,27 +40,50 @@
     animation: float 3s ease-in-out infinite;
   }
 
-  .animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: .5;
-    }
-  }
-
-  .animate-ping {
-    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
-
-  @keyframes ping {
-    75%, 100% {
-      transform: scale(1.5);
+  @keyframes circuit-scan {
+    0% {
+      transform: translateY(-100%);
       opacity: 0;
     }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+
+  .animate-circuit-scan {
+    animation: circuit-scan 8s linear infinite;
+  }
+
+  @keyframes circuit-pulse {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.5);
+    }
+  }
+
+  .animate-circuit-pulse {
+    animation: circuit-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes circuit-line {
+    0% {
+      stroke-dashoffset: 100;
+    }
+    100% {
+      stroke-dashoffset: -100;
+    }
+  }
+
+  .animate-circuit-line {
+    stroke-dasharray: 100;
+    animation: circuit-line 3s linear infinite;
   }
 }

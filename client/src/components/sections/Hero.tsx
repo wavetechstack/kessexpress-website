@@ -22,17 +22,41 @@ export default function Hero() {
       <div className="absolute inset-0 z-10 opacity-10">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <pattern id="circuit" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+            {/* Horizontal lines */}
             <path
-              d="M10 10h30v30h-30z M15 25h20 M25 15v20"
+              d="M10 10h30 M10 40h30"
               fill="none"
               stroke="currentColor"
               strokeWidth="0.5"
-              className="text-blue-200"
+              className="text-blue-200 animate-circuit-line"
             />
-            <circle cx="25" cy="25" r="1" className="fill-blue-200" />
+            {/* Vertical lines */}
+            <path
+              d="M10 10v30 M40 10v30"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="0.5"
+              className="text-blue-200 animate-circuit-line"
+            />
+            {/* Diagonal connections */}
+            <path
+              d="M15 15l20 20 M35 15l-20 20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="0.5"
+              className="text-blue-200 animate-circuit-line"
+            />
+            {/* Circuit nodes */}
+            <circle cx="10" cy="10" r="1.5" className="fill-blue-200 animate-circuit-pulse" />
+            <circle cx="40" cy="10" r="1.5" className="fill-blue-200 animate-circuit-pulse" />
+            <circle cx="10" cy="40" r="1.5" className="fill-blue-200 animate-circuit-pulse" />
+            <circle cx="40" cy="40" r="1.5" className="fill-blue-200 animate-circuit-pulse" />
+            <circle cx="25" cy="25" r="2" className="fill-blue-200 animate-circuit-pulse" />
           </pattern>
           <rect width="100%" height="100%" fill="url(#circuit)" />
         </svg>
+        {/* Scanning effect overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-200/20 to-transparent animate-circuit-scan" />
       </div>
 
       {/* Animated gradient background */}
