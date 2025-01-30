@@ -26,4 +26,17 @@
     background-size: 200% 100%;
     animation: gradient-x 15s ease infinite;
   }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
 }
