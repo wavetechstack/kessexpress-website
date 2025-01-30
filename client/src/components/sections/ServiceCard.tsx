@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -10,19 +11,40 @@ interface ServiceCardProps {
 
 export default function ServiceCard({ title, description, icon }: ServiceCardProps) {
   return (
-    <Card className="hover:shadow-lg transition-shadow">
-      <CardHeader>
-        <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
-          {icon}
-        </div>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Link href="/consultation">
-          <Button variant="outline" className="w-full">Learn More</Button>
-        </Link>
-      </CardContent>
-    </Card>
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Card className="hover:shadow-lg transition-shadow h-full">
+        <CardHeader>
+          <motion.div
+            whileHover={{ rotate: 360 }}
+            transition={{ duration: 0.5 }}
+            className="w-12 h-12 flex items-center justify-center rounded-lg bg-primary/10 text-primary mb-4"
+          >
+            {icon}
+          </motion.div>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Link href="/consultation">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button 
+                variant="outline" 
+                className="w-full relative overflow-hidden group"
+              >
+                <span className="relative z-10">Learn More</span>
+                <div className="absolute inset-0 bg-primary transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+                <div className="absolute inset-0 bg-transparent group-hover:bg-primary/10 transition-colors duration-300 ease-out" />
+              </Button>
+            </motion.div>
+          </Link>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
