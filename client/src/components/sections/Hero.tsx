@@ -21,6 +21,7 @@ export default function Hero() {
         id="tsparticles"
         init={particlesInit}
         options={{
+          fullScreen: false,
           background: {
             color: {
               value: "transparent",
@@ -30,13 +31,25 @@ export default function Hero() {
           particles: {
             color: {
               value: "#ffffff",
+              animation: {
+                enable: true,
+                speed: 20,
+                sync: true
+              }
             },
             links: {
               color: "#ffffff",
               distance: 150,
               enable: true,
-              opacity: 0.2,
+              opacity: 0.4,
               width: 1,
+              triangles: {
+                enable: true,
+                opacity: 0.05
+              }
+            },
+            collisions: {
+              enable: true,
             },
             move: {
               direction: "none",
@@ -45,25 +58,77 @@ export default function Hero() {
                 default: "bounce",
               },
               random: false,
-              speed: 1,
+              speed: 2,
               straight: false,
+              attract: {
+                enable: true,
+                rotateX: 600,
+                rotateY: 1200
+              }
             },
             number: {
               density: {
                 enable: true,
                 area: 800,
               },
-              value: 80,
+              value: 100,
             },
             opacity: {
-              value: 0.3,
+              value: 0.5,
+              animation: {
+                enable: true,
+                speed: 3,
+                minimumValue: 0.1,
+                sync: false
+              }
             },
             shape: {
-              type: "circle",
+              type: ["circle", "triangle", "polygon"],
+              options: {
+                polygon: {
+                  sides: 6
+                }
+              }
             },
             size: {
               value: { min: 1, max: 3 },
+              animation: {
+                enable: true,
+                speed: 2,
+                minimumValue: 0.1,
+                sync: false
+              }
             },
+          },
+          interactivity: {
+            events: {
+              onHover: {
+                enable: true,
+                mode: ["grab", "bubble"]
+              },
+              onClick: {
+                enable: true,
+                mode: "push"
+              },
+              resize: true
+            },
+            modes: {
+              grab: {
+                distance: 140,
+                links: {
+                  opacity: 1
+                }
+              },
+              bubble: {
+                distance: 200,
+                size: 6,
+                duration: 2,
+                opacity: 0.8
+              },
+              push: {
+                quantity: 4
+              }
+            }
           },
           detectRetina: true,
         }}
