@@ -126,18 +126,18 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
               >
-                <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-                  <span className="block">Transform Your</span>
+                <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl leading-tight">
+                  <span className="block mb-2">Transform Your</span>
                   <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-indigo-200 animate-pulse">
                     Digital Future
                   </span>
                 </h1>
-                <p className="mt-3 text-base text-gray-100 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                <p className="mt-6 text-base text-gray-100 sm:mt-8 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-8 md:text-xl lg:mx-0">
                   With nearly a decade of excellence in both e-commerce and IT solutions, KessExpress delivers cutting-edge technology services that power your business growth.
                 </p>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -145,8 +145,8 @@ export default function Hero() {
               >
                 <div className="rounded-md shadow">
                   <Link href="/consultation">
-                    <Button 
-                      size="lg" 
+                    <Button
+                      size="lg"
                       className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white"
                     >
                       Book a Consultation
@@ -155,9 +155,9 @@ export default function Hero() {
                 </div>
                 <div className="mt-3 sm:mt-0 sm:ml-3">
                   <Link href="/services">
-                    <Button 
-                      variant="outline" 
-                      size="lg" 
+                    <Button
+                      variant="outline"
+                      size="lg"
                       className="w-full text-white border-white bg-transparent hover:bg-white/10"
                     >
                       Learn More
