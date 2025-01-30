@@ -2,18 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { useCallback } from "react";
-import { Container, Engine } from "tsparticles-engine";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
+import { Engine } from "@tsparticles/engine";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 
 export default function Hero() {
   const particlesInit = useCallback(async (engine: Engine) => {
-    console.log("Initializing particles...");
-    await loadFull(engine);
-  }, []);
-
-  const particlesLoaded = useCallback(async (container: Container | undefined) => {
-    console.log("Particles loaded", container);
+    await loadSlim(engine);
   }, []);
 
   return (
@@ -68,7 +63,6 @@ export default function Hero() {
       <Particles
         id="tsparticles"
         init={particlesInit}
-        loaded={particlesLoaded}
         className="absolute inset-0 z-20"
         options={{
           fullScreen: false,
