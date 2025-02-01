@@ -4,9 +4,9 @@ import sys
 import os
 from pygame.math import Vector2
 
-# Initialize Pygame with fallback options
+# Initialize Pygame with VNC-compatible settings
+os.environ['SDL_VIDEODRIVER'] = 'dummy'
 pygame.init()
-os.environ['SDL_VIDEODRIVER'] = 'x11'
 
 # Constants
 CELL_SIZE = 40
@@ -23,8 +23,8 @@ TEXT_COLOR = (255, 255, 255)
 try:
     screen = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
     pygame.display.set_caption('Snake Game')
-except pygame.error:
-    print("Could not initialize Pygame display. Check if display server is available.")
+except pygame.error as e:
+    print(f"Could not initialize Pygame display: {e}")
     sys.exit(1)
 
 clock = pygame.time.Clock()
