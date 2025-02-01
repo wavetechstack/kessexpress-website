@@ -5,24 +5,36 @@ import helmet from "helmet";
 
 const app = express();
 
-// Add security headers appropriate for Replit hosting
+// Configure security headers based on environment
+const isDevelopment = process.env.NODE_ENV !== 'production';
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https:", "*.replit.dev"],
-      imgSrc: ["'self'", "data:", "https:", "*.replit.dev"],
-      connectSrc: ["'self'", "https:", "wss:", "*.replit.dev"],
-      fontSrc: ["'self'", "https:", "data:", "*.replit.dev"],
+      defaultSrc: ["'self'", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
+      styleSrc: ["'self'", "'unsafe-inline'", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
+      imgSrc: ["'self'", "data:", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
+      connectSrc: ["'self'", ...(isDevelopment ? ["*", "ws:", "wss:"] : ["https://kessexpress.com", "wss://kessexpress.com"])],
+      fontSrc: ["'self'", "data:", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
       objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
-      frameSrc: ["'self'", "*.replit.dev"],
+      mediaSrc: ["'self'", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
+      frameSrc: ["'self'", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
     },
   },
   crossOriginEmbedderPolicy: false,
-  crossOriginResourcePolicy: { policy: "cross-origin" }
+  crossOriginResourcePolicy: { policy: isDevelopment ? "cross-origin" : "same-origin" }
 }));
+
+// Force domain redirection only in production
+if (!isDevelopment) {
+  app.use((req, res, next) => {
+    const host = req.header("host");
+    if (host && !host.includes("kessexpress.com")) {
+      return res.redirect(301, `https://kessexpress.com${req.url}`);
+    }
+    next();
+  });
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -75,7 +87,7 @@ app.use((req, res, next) => {
   }
 
   const PORT = process.env.PORT || 5000;
-  server.listen(PORT, "0.0.0.0", () => {
+  server.listen(PORT, () => {
     log(`serving on port ${PORT}`);
   });
 })();
