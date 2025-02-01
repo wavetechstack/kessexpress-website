@@ -118,7 +118,7 @@ class Game:
             score_text = self.font.render(f'Score: {self.score}', True, TEXT_COLOR)
             screen.blit(score_text, (10, 10))
 
-def main():
+if __name__ == '__main__':
     try:
         game = Game()
         SCREEN_UPDATE = pygame.USEREVENT
@@ -147,6 +147,3 @@ def main():
         print(f"An error occurred: {e}")
         pygame.quit()
         sys.exit(1)
-
-if __name__ == '__main__':
-    main()
