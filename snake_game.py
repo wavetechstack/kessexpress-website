@@ -1,10 +1,12 @@
 import pygame
 import random
 import sys
+import os
 from pygame.math import Vector2
 
-# Initialize Pygame
+# Initialize Pygame with fallback options
 pygame.init()
+os.environ['SDL_VIDEODRIVER'] = 'x11'
 
 # Constants
 CELL_SIZE = 40
@@ -17,9 +19,14 @@ SNAKE_COLOR = (0, 255, 0)
 FOOD_COLOR = (255, 0, 0)
 TEXT_COLOR = (255, 255, 255)
 
-# Setup the main window
-screen = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
-pygame.display.set_caption('Snake Game')
+# Setup the main window with error handling
+try:
+    screen = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
+    pygame.display.set_caption('Snake Game')
+except pygame.error:
+    print("Could not initialize Pygame display. Check if display server is available.")
+    sys.exit(1)
+
 clock = pygame.time.Clock()
 
 class Snake:
@@ -65,7 +72,11 @@ class Game:
         self.snake = Snake()
         self.food = Food()
         self.score = 0
-        self.font = pygame.font.Font(None, 36)
+        try:
+            self.font = pygame.font.Font(None, 36)
+        except pygame.error:
+            print("Could not initialize font. Using fallback.")
+            self.font = None
 
     def update(self):
         self.snake.move()
@@ -77,7 +88,11 @@ class Game:
         self.food.draw()
         self.snake.draw()
         self.draw_score()
-        pygame.display.update()
+        try:
+            pygame.display.update()
+        except pygame.error:
+            print("Error updating display")
+            sys.exit(1)
 
     def check_collision(self):
         if self.food.pos == self.snake.body[0]:
@@ -86,47 +101,52 @@ class Game:
             self.score += 1
 
     def check_fail(self):
-        # Check if snake hits walls
         if not 0 <= self.snake.body[0].x < CELL_NUMBER or not 0 <= self.snake.body[0].y < CELL_NUMBER:
             self.game_over()
 
-        # Check if snake hits itself
         for block in self.snake.body[1:]:
             if block == self.snake.body[0]:
                 self.game_over()
 
     def game_over(self):
+        print(f"Game Over! Final Score: {self.score}")
         pygame.quit()
         sys.exit()
 
     def draw_score(self):
-        score_text = self.font.render(f'Score: {self.score}', True, TEXT_COLOR)
-        screen.blit(score_text, (10, 10))
+        if self.font:
+            score_text = self.font.render(f'Score: {self.score}', True, TEXT_COLOR)
+            screen.blit(score_text, (10, 10))
 
 def main():
-    game = Game()
-    SCREEN_UPDATE = pygame.USEREVENT
-    pygame.time.set_timer(SCREEN_UPDATE, 150)  # Game speed (lower = faster)
+    try:
+        game = Game()
+        SCREEN_UPDATE = pygame.USEREVENT
+        pygame.time.set_timer(SCREEN_UPDATE, 150)
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == SCREEN_UPDATE:
-                game.update()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP and game.snake.direction.y != 1:
-                    game.snake.direction = Vector2(0, -1)
-                if event.key == pygame.K_DOWN and game.snake.direction.y != -1:
-                    game.snake.direction = Vector2(0, 1)
-                if event.key == pygame.K_LEFT and game.snake.direction.x != 1:
-                    game.snake.direction = Vector2(-1, 0)
-                if event.key == pygame.K_RIGHT and game.snake.direction.x != -1:
-                    game.snake.direction = Vector2(1, 0)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == SCREEN_UPDATE:
+                    game.update()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP and game.snake.direction.y != 1:
+                        game.snake.direction = Vector2(0, -1)
+                    if event.key == pygame.K_DOWN and game.snake.direction.y != -1:
+                        game.snake.direction = Vector2(0, 1)
+                    if event.key == pygame.K_LEFT and game.snake.direction.x != 1:
+                        game.snake.direction = Vector2(-1, 0)
+                    if event.key == pygame.K_RIGHT and game.snake.direction.x != -1:
+                        game.snake.direction = Vector2(1, 0)
 
-        game.draw()
-        clock.tick(60)
+            game.draw()
+            clock.tick(60)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        pygame.quit()
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()
