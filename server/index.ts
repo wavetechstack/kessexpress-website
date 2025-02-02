@@ -7,29 +7,34 @@ const app = express();
 
 // Configure security headers based on environment
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const ALLOWED_DOMAINS = [
+  "kessexpress.com",
+  "6f1cb0f1-e92a-4fd6-82b6-44193563fefe-00-3rw15b1v8ntjv.riker.replit.dev"
+];
+
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      defaultSrc: ["'self'", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
-      styleSrc: ["'self'", "'unsafe-inline'", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
-      imgSrc: ["'self'", "data:", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
-      connectSrc: ["'self'", ...(isDevelopment ? ["*", "ws:", "wss:"] : ["https://kessexpress.com", "wss://kessexpress.com"])],
-      fontSrc: ["'self'", "data:", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
+      defaultSrc: ["'self'", ...(isDevelopment ? ["*"] : ALLOWED_DOMAINS)],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", ...(isDevelopment ? ["*"] : ALLOWED_DOMAINS)],
+      styleSrc: ["'self'", "'unsafe-inline'", ...(isDevelopment ? ["*"] : ALLOWED_DOMAINS)],
+      imgSrc: ["'self'", "data:", ...(isDevelopment ? ["*"] : ALLOWED_DOMAINS)],
+      connectSrc: ["'self'", ...(isDevelopment ? ["*", "ws:", "wss:"] : [...ALLOWED_DOMAINS, "wss://kessexpress.com"])],
+      fontSrc: ["'self'", "data:", ...(isDevelopment ? ["*"] : ALLOWED_DOMAINS)],
       objectSrc: ["'none'"],
-      mediaSrc: ["'self'", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
-      frameSrc: ["'self'", ...(isDevelopment ? ["*"] : ["https://kessexpress.com"])],
+      mediaSrc: ["'self'", ...(isDevelopment ? ["*"] : ALLOWED_DOMAINS)],
+      frameSrc: ["'self'", ...(isDevelopment ? ["*"] : ALLOWED_DOMAINS)],
     },
   },
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: { policy: isDevelopment ? "cross-origin" : "same-origin" }
 }));
 
-// Force domain redirection only in production
+// Domain redirection only in production and only for non-Replit domains
 if (!isDevelopment) {
   app.use((req, res, next) => {
     const host = req.header("host");
-    if (host && !host.includes("kessexpress.com")) {
+    if (host && !ALLOWED_DOMAINS.some(domain => host.includes(domain))) {
       return res.redirect(301, `https://kessexpress.com${req.url}`);
     }
     next();
@@ -87,7 +92,7 @@ app.use((req, res, next) => {
   }
 
   const PORT = process.env.PORT || 5000;
-  server.listen(PORT, () => {
+  server.listen(PORT, "0.0.0.0", () => {
     log(`serving on port ${PORT}`);
   });
 })();
