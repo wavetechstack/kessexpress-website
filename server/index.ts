@@ -10,6 +10,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const ALLOWED_DOMAINS = [
   "kessexpress.com",
   "www.kessexpress.com",
+  "hello-world-wavetechstack.replit.app",
   "6f1cb0f1-e92a-4fd6-82b6-44193563fefe-00-3rw15b1v8ntjv.riker.replit.dev"
 ];
 
@@ -31,20 +32,20 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: isDevelopment ? "cross-origin" : "same-origin" }
 }));
 
-// Domain redirection only in production and only for non-Replit domains
-if (!isDevelopment) {
-  app.use((req, res, next) => {
-    const host = req.header("host");
-    if (host && !ALLOWED_DOMAINS.some(domain => host.includes(domain))) {
-      return res.redirect(301, `https://kessexpress.com${req.url}`);
-    }
-    next();
-  });
-}
+// Domain redirection middleware
+app.use((req, res, next) => {
+  const host = req.header("host");
+  // Only redirect in production and if the host doesn't match allowed domains
+  if (!isDevelopment && host && !ALLOWED_DOMAINS.some(domain => host.includes(domain))) {
+    return res.redirect(301, `https://kessexpress.com${req.url}`);
+  }
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -78,6 +79,7 @@ app.use((req, res, next) => {
 (async () => {
   const server = registerRoutes(app);
 
+  // Error handling middleware
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
@@ -93,7 +95,7 @@ app.use((req, res, next) => {
   }
 
   const PORT = process.env.PORT || 5000;
-  server.listen(PORT, "0.0.0.0", () => {
+  server.listen(PORT, () => {
     log(`serving on port ${PORT}`);
   });
 })();
