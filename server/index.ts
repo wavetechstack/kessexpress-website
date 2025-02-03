@@ -13,7 +13,8 @@ const ALLOWED_DOMAINS = [
   "hello-world-wavetechstack.replit.app",
   "6f1cb0f1-e92a-4fd6-82b6-44193563fefe-00-3rw15b1v8ntjv.riker.replit.dev",
   "*.replit.dev", // Allow all Replit subdomains
-  "*.riker.replit.dev" // Specifically allow riker subdomains
+  "*.riker.replit.dev", // Specifically allow riker subdomains
+  "35.186.242.242" // Allow Replit's IP
 ];
 
 // Basic startup logging
