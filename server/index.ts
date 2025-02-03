@@ -32,11 +32,15 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: isDevelopment ? "cross-origin" : "same-origin" }
 }));
 
-// Domain redirection middleware
+// Domain redirection middleware with logging
 app.use((req, res, next) => {
   const host = req.header("host");
+  // Log incoming requests for debugging
+  log(`Incoming request from host: ${host}`);
+
   // Only redirect in production and if the host doesn't match allowed domains
   if (!isDevelopment && host && !ALLOWED_DOMAINS.some(domain => host.includes(domain))) {
+    log(`Redirecting ${host} to kessexpress.com`);
     return res.redirect(301, `https://kessexpress.com${req.url}`);
   }
   next();
@@ -59,18 +63,8 @@ app.use((req, res, next) => {
 
   res.on("finish", () => {
     const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
-      log(logLine);
-    }
+    const logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+    log(logLine);
   });
 
   next();
@@ -84,8 +78,8 @@ app.use((req, res, next) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
+    log(`Error: ${message}`);
     res.status(status).json({ message });
-    throw err;
   });
 
   if (app.get("env") === "development") {
