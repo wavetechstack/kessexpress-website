@@ -173,7 +173,7 @@ export default function Consultation() {
                           <SelectValue placeholder="Select a service" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent className="bg-white border shadow-md">
                         <SelectItem value="analytics">Analytics & BI</SelectItem>
                         <SelectItem value="cybersecurity">Cybersecurity</SelectItem>
                         <SelectItem value="data-platform">Data Platform Services</SelectItem>
