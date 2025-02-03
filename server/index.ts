@@ -140,7 +140,7 @@ const startServer = async (retryCount = 0, maxRetries = 3) => {
     server.headersTimeout = 66000; // Slightly higher than keepAliveTimeout
 
     // Start listening
-    server.listen(PORT, "0.0.0.0", () => {
+    server.listen(PORT, () => {
       enhancedLog(`Server is running on port ${PORT}`);
       enhancedLog(`Server is ready to accept connections`);
     });
