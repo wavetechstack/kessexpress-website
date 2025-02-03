@@ -11,7 +11,8 @@ const ALLOWED_DOMAINS = [
   "kessexpress.com",
   "www.kessexpress.com",
   "hello-world-wavetechstack.replit.app",
-  "6f1cb0f1-e92a-4fd6-82b6-44193563fefe-00-3rw15b1v8ntjv.riker.replit.dev"
+  "6f1cb0f1-e92a-4fd6-82b6-44193563fefe-00-3rw15b1v8ntjv.riker.replit.dev",
+  "*.replit.dev" // Allow all Replit subdomains
 ];
 
 app.use(helmet({
@@ -29,17 +30,23 @@ app.use(helmet({
     },
   },
   crossOriginEmbedderPolicy: false,
-  crossOriginResourcePolicy: { policy: isDevelopment ? "cross-origin" : "same-origin" }
+  crossOriginResourcePolicy: { policy: isDevelopment ? "cross-origin" : "same-site" }
 }));
 
-// Domain redirection middleware with logging
+// Domain redirection middleware with enhanced logging
 app.use((req, res, next) => {
   const host = req.header("host");
   // Log incoming requests for debugging
-  log(`Incoming request from host: ${host}`);
+  log(`Incoming request from host: ${host}, path: ${req.path}`);
 
   // Only redirect in production and if the host doesn't match allowed domains
-  if (!isDevelopment && host && !ALLOWED_DOMAINS.some(domain => host.includes(domain))) {
+  if (!isDevelopment && host && !ALLOWED_DOMAINS.some(domain => {
+    if (domain.startsWith("*.")) {
+      const suffix = domain.slice(1); // Remove *
+      return host.endsWith(suffix);
+    }
+    return host.includes(domain);
+  })) {
     log(`Redirecting ${host} to kessexpress.com`);
     return res.redirect(301, `https://kessexpress.com${req.url}`);
   }
@@ -53,13 +60,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
-
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
 
   res.on("finish", () => {
     const duration = Date.now() - start;

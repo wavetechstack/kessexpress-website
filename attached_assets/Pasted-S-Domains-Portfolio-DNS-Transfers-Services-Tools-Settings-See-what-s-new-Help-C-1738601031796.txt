@@ -1,0 +1,120 @@
+S
+
+
+Domains
+Portfolio
+DNS
+Transfers
+
+Services
+
+Tools
+
+Settings
+
+See what's new
+Help Center
+
+
+KE
+
+Domain Portfolio
+kessexpress.com
+Overview
+DNS
+Products
+
+DNS Records
+
+Forwarding
+
+Nameservers
+
+Premium DNS
+
+Hostnames
+
+DNSSEC
+
+Crypto Wallet
+Add a new record
+DNS records
+ define how your domain behaves, like showing your website content and delivering your email.
+
+
+Add New Record
+Easily verify domain ownership
+Need to verify ownership of your domain to connect to an external service? We've made it easier than ever.
+
+
+Verify Domain Ownership
+
+Filters
+
+Actions
+Type
+Name
+Data
+TTL
+Delete
+Edit
+
+a	@	15.197.225.128	1 Hour	
+Can't delete
+Can't edit
+
+a	@	3.33.251.168	1 Hour	
+Can't delete
+Can't edit
+
+a	@	34.111.179.208	1 Hour		
+
+ns	@	ns57.domaincontrol.com.	1 Hour	
+Can't delete
+Can't edit
+
+ns	@	ns58.domaincontrol.com.	1 Hour	
+Can't delete
+Can't edit
+
+cname	autodiscover	autodiscover.outlook.com.	1 Hour		
+
+cname	email	email.secureserver.net.	1 Hour		
+
+cname	lyncdiscover	webdir.online.lync.com.	1 Hour		
+
+cname	msoid	clientconfig.microsoftonline-p.net.	1 Hour		
+
+cname	sip	sipdir.online.lync.com.	1 Hour		
+
+
+
+1
+
+2
+
+3
+
+
+10
+Your free social media subdomain is ready!
+Your domain comes with unlimited free social subdomains! To get you started, we have automatically created the social subdomain facebook.kessexpress.com to link to your Facebook page.
+Improved SEO
+Social subdomains can help your website rank higher in search engines.
+Promote your social page
+Share your social media presence with your visitors. Anybody visiting your social subdomain facebook.kessexpress.com will see your social media page.
+Customizable
+You can change your social subdomain to whatever you like.
+Choose a platform to start:
+
+Instagram
+
+Facebook
+
+Yelp
+
+Google
+
+Other
+*Creating a social subdomain doesn't affect your main domain. kessexpress.com is available for you to use whichever way you like.
+Domain Portfolio: kessexpress.com
