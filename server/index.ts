@@ -12,8 +12,13 @@ const ALLOWED_DOMAINS = [
   "www.kessexpress.com",
   "hello-world-wavetechstack.replit.app",
   "6f1cb0f1-e92a-4fd6-82b6-44193563fefe-00-3rw15b1v8ntjv.riker.replit.dev",
-  "*.replit.dev" // Allow all Replit subdomains
+  "*.replit.dev", // Allow all Replit subdomains
+  "*.riker.replit.dev" // Specifically allow riker subdomains
 ];
+
+// Basic startup logging
+log("Starting server...");
+log(`Environment: ${process.env.NODE_ENV}`);
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -30,14 +35,14 @@ app.use(helmet({
     },
   },
   crossOriginEmbedderPolicy: false,
-  crossOriginResourcePolicy: { policy: isDevelopment ? "cross-origin" : "same-site" }
+  crossOriginResourcePolicy: { policy: "cross-origin" } // Allow cross-origin for Replit deployment
 }));
 
 // Domain redirection middleware with enhanced logging
 app.use((req, res, next) => {
   const host = req.header("host");
   // Log incoming requests for debugging
-  log(`Incoming request from host: ${host}, path: ${req.path}`);
+  log(`Incoming request from host: ${host}, path: ${req.path}, protocol: ${req.protocol}`);
 
   // Only redirect in production and if the host doesn't match allowed domains
   if (!isDevelopment && host && !ALLOWED_DOMAINS.some(domain => {
@@ -71,25 +76,34 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const server = registerRoutes(app);
+  try {
+    log("Registering routes...");
+    const server = registerRoutes(app);
 
-  // Error handling middleware
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    // Error handling middleware
+    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
 
-    log(`Error: ${message}`);
-    res.status(status).json({ message });
-  });
+      log(`Error: ${message}`);
+      res.status(status).json({ message });
+    });
 
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
+    if (app.get("env") === "development") {
+      log("Setting up Vite in development mode...");
+      await setupVite(app, server);
+    } else {
+      log("Setting up static serving for production...");
+      serveStatic(app);
+    }
+
+    const PORT = process.env.PORT || 5000;
+    server.listen(PORT, "0.0.0.0", () => {
+      log(`Server is running on port ${PORT}`);
+      log(`Server is ready to accept connections`);
+    });
+  } catch (error) {
+    log(`Fatal error starting server: ${error}`);
+    process.exit(1);
   }
-
-  const PORT = process.env.PORT || 5000;
-  server.listen(PORT, "0.0.0.0", () => {
-    log(`Server is running on port ${PORT}`);
-  });
 })();
