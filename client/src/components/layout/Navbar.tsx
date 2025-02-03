@@ -7,7 +7,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -40,7 +39,6 @@ export default function Navbar() {
                 </div>
               </Link>
             ))}
-            <ThemeToggle />
             <Link href="/consultation">
               <Button>Book Consultation</Button>
             </Link>
@@ -49,7 +47,6 @@ export default function Navbar() {
           {/* Mobile menu */}
           <div className="flex md:hidden">
             <div className="flex items-center space-x-2">
-              <ThemeToggle />
               <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon">
