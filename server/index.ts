@@ -17,10 +17,17 @@ const ALLOWED_DOMAINS = [
   "35.186.242.242" // Allow Replit's IP
 ];
 
-// Basic startup logging
-log("Starting server...");
-log(`Environment: ${process.env.NODE_ENV}`);
+// Enhanced logging function
+const enhancedLog = (message: string, type: 'info' | 'error' | 'warn' = 'info') => {
+  const timestamp = new Date().toISOString();
+  log(`[${timestamp}] [${type.toUpperCase()}] ${message}`);
+};
 
+// Basic startup logging
+enhancedLog("Starting server...");
+enhancedLog(`Environment: ${process.env.NODE_ENV}`);
+
+// Helmet configuration
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -36,24 +43,22 @@ app.use(helmet({
     },
   },
   crossOriginEmbedderPolicy: false,
-  crossOriginResourcePolicy: { policy: "cross-origin" } // Allow cross-origin for Replit deployment
+  crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
 // Domain redirection middleware with enhanced logging
 app.use((req, res, next) => {
   const host = req.header("host");
-  // Log incoming requests for debugging
-  log(`Incoming request from host: ${host}, path: ${req.path}, protocol: ${req.protocol}`);
+  enhancedLog(`Incoming request from host: ${host}, path: ${req.path}, protocol: ${req.protocol}`);
 
-  // Only redirect in production and if the host doesn't match allowed domains
   if (!isDevelopment && host && !ALLOWED_DOMAINS.some(domain => {
     if (domain.startsWith("*.")) {
-      const suffix = domain.slice(1); // Remove *
+      const suffix = domain.slice(1);
       return host.endsWith(suffix);
     }
     return host.includes(domain);
   })) {
-    log(`Redirecting ${host} to kessexpress.com`);
+    enhancedLog(`Redirecting ${host} to kessexpress.com`, 'info');
     return res.redirect(301, `https://kessexpress.com${req.url}`);
   }
   next();
@@ -62,49 +67,96 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
+});
+
 // Request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
-  const path = req.path;
-
   res.on("finish", () => {
     const duration = Date.now() - start;
-    const logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-    log(logLine);
+    enhancedLog(`${req.method} ${req.path} ${res.statusCode} in ${duration}ms`);
   });
-
   next();
 });
 
-(async () => {
+// Server startup function with retry mechanism
+const startServer = async (retryCount = 0, maxRetries = 3) => {
   try {
-    log("Registering routes...");
+    enhancedLog("Registering routes...");
     const server = registerRoutes(app);
 
     // Error handling middleware
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";
-
-      log(`Error: ${message}`);
+      enhancedLog(`Error: ${message}`, 'error');
       res.status(status).json({ message });
     });
 
     if (app.get("env") === "development") {
-      log("Setting up Vite in development mode...");
+      enhancedLog("Setting up Vite in development mode...");
       await setupVite(app, server);
     } else {
-      log("Setting up static serving for production...");
+      enhancedLog("Setting up static serving for production...");
       serveStatic(app);
     }
 
     const PORT = process.env.PORT || 5000;
-    server.listen(PORT, "0.0.0.0", () => {
-      log(`Server is running on port ${PORT}`);
-      log(`Server is ready to accept connections`);
+
+    // Handle server startup errors
+    server.on('error', (error: any) => {
+      if (error.code === 'EADDRINUSE') {
+        enhancedLog(`Port ${PORT} is already in use`, 'error');
+        if (retryCount < maxRetries) {
+          enhancedLog(`Retrying in 5 seconds... (Attempt ${retryCount + 1}/${maxRetries})`, 'warn');
+          setTimeout(() => startServer(retryCount + 1, maxRetries), 5000);
+        } else {
+          enhancedLog('Max retry attempts reached. Exiting...', 'error');
+          process.exit(1);
+        }
+      } else {
+        enhancedLog(`Server error: ${error.message}`, 'error');
+        process.exit(1);
+      }
     });
+
+    // Handle process termination
+    const cleanup = () => {
+      enhancedLog('Shutting down gracefully...', 'info');
+      server.close(() => {
+        enhancedLog('Server closed successfully', 'info');
+        process.exit(0);
+      });
+    };
+
+    process.on('SIGTERM', cleanup);
+    process.on('SIGINT', cleanup);
+
+    // Keep-alive configuration
+    server.keepAliveTimeout = 65000; // Slightly higher than ALB's idle timeout
+    server.headersTimeout = 66000; // Slightly higher than keepAliveTimeout
+
+    // Start listening
+    server.listen(PORT, "0.0.0.0", () => {
+      enhancedLog(`Server is running on port ${PORT}`);
+      enhancedLog(`Server is ready to accept connections`);
+    });
+
+    return server;
   } catch (error) {
-    log(`Fatal error starting server: ${error}`);
-    process.exit(1);
+    enhancedLog(`Fatal error starting server: ${error}`, 'error');
+    if (retryCount < maxRetries) {
+      enhancedLog(`Retrying server startup... (Attempt ${retryCount + 1}/${maxRetries})`, 'warn');
+      setTimeout(() => startServer(retryCount + 1, maxRetries), 5000);
+    } else {
+      enhancedLog('Max retry attempts reached. Exiting...', 'error');
+      process.exit(1);
+    }
   }
-})();
+};
+
+// Start the server
+startServer();
