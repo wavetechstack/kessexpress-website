@@ -18,7 +18,7 @@ const ALLOWED_DOMAINS = [
   "35.186.242.242" // Allow Replit's IP
 ];
 
-// Enhanced logging function
+// Enhanced logging function with timestamp
 const enhancedLog = (message: string, type: 'info' | 'error' | 'warn' = 'info') => {
   const timestamp = new Date().toISOString();
   log(`[${timestamp}] [${type.toUpperCase()}] ${message}`);
