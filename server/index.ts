@@ -3,6 +3,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import helmet from "helmet";
 import cors from "cors";
+import { startPingService } from './ping-service';
 
 const app = express();
 
@@ -126,6 +127,10 @@ const startServer = async (retryCount = 0, maxRetries = 5) => {
     server.listen(PORT, "0.0.0.0", () => {
       enhancedLog(`Server is running on http://0.0.0.0:${PORT}`);
       enhancedLog(`Server is ready to accept connections`);
+
+      // Start the ping service after server is running
+      startPingService();
+      enhancedLog("Ping service started");
     });
 
     return server;
