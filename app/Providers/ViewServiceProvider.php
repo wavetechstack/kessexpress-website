@@ -15,8 +15,14 @@ class ViewServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        // Register components using x- prefix
-        Blade::componentNamespace('App\\View\\Components\\Sections', 'sections');
+        // Register the components namespace
+        Blade::componentNamespace('App\\View\\Components', 'x');
+
+        // Register sections components
+        Blade::component('hero', \App\View\Components\Sections\Hero::class);
+        Blade::component('stats', \App\View\Components\Sections\Stats::class);
+        Blade::component('service-card', \App\View\Components\Sections\ServiceCard::class);
+        Blade::component('partners', \App\View\Components\Sections\Partners::class);
 
         // Share services data with home page
         View::composer('pages.home', function ($view) {

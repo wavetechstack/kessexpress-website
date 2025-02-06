@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="pt-16">
-        <x-sections.hero />
-        <x-sections.stats />
+        <x-hero></x-hero>
+        <x-stats></x-stats>
 
         <section class="py-24 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,7 +15,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach($services as $service)
-                        <x-sections.service-card 
+                        <x-service-card 
                             :title="$service['title']"
                             :description="$service['description']"
                             :icon="$service['icon']"
@@ -25,6 +25,6 @@
             </div>
         </section>
 
-        <x-sections.partners />
+        <x-partners></x-partners>
     </div>
 </x-app-layout>
