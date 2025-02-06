@@ -1,8 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 
-Route::view('/', 'pages.home')->name('home');
+Route::get('/', function () {
+    return view('pages.home');
+})->name('home');
+
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/services', 'pages.services')->name('services');
 Route::view('/consultation', 'pages.consultation')->name('consultation');
