@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const PING_INTERVAL = 5 * 60 * 1000; // 5 minutes
-const BASE_URL = process.env.APP_URL || `http://0.0.0.0:${process.env.PORT || 5000}`;
+const BASE_URL = process.env.APP_URL || `http://0.0.0.0:${process.env.PORT || 3000}`;
 
 export function startPingService() {
   // Initial ping
