@@ -3,93 +3,88 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import helmet from "helmet";
 import cors from "cors";
-import { startPingService } from './ping-service';
 
 const app = express();
 
-// Configure security headers based on environment
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
-// CORS configuration - More permissive for development
-app.use(cors({
-  origin: "*", // Allow all origins in development
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-  credentials: true,
-  maxAge: 86400 // Cache preflight requests for 24 hours
-}));
-
-// Minimal helmet configuration for development
+// Basic security middleware
 app.use(helmet({
-  contentSecurityPolicy: false,
+  contentSecurityPolicy: false, // Disabled for development
   crossOriginEmbedderPolicy: false,
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-  xssFilter: true
+  crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
+// CORS configuration
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? [process.env.APP_URL || ''].filter(Boolean)
+    : '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
-});
-
 // Request logging middleware
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
-  res.on("finish", () => {
+  res.on('finish', () => {
     const duration = Date.now() - start;
-    enhancedLog(`${req.method} ${req.originalUrl} ${res.statusCode} in ${duration}ms`);
+    console.log(`${new Date().toISOString()} ${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
   });
   next();
 });
 
-// Error handling middleware
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  enhancedLog(`Error occurred: ${err.message}`, 'error');
-  console.error(err);
-  res.status(500).json({ error: 'Internal Server Error' });
+// Health check endpoint
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
 
-// Enhanced logging function with timestamp
-const enhancedLog = (message: string, type: 'info' | 'error' | 'warn' = 'info') => {
-  const timestamp = new Date().toISOString();
-  log(`[${timestamp}] [${type.toUpperCase()}] ${message}`);
-};
+// Error handling middleware
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  console.error('Error:', err);
+  res.status(500).json({
+    error: process.env.NODE_ENV === 'production' 
+      ? 'Internal Server Error' 
+      : err.message
+  });
+});
 
-// Server startup function
-const startServer = async (retryCount = 0, maxRetries = 5) => {
+async function startServer() {
   try {
-    enhancedLog("Starting server...");
     const server = registerRoutes(app);
+    const isDevelopment = process.env.NODE_ENV !== 'production';
+    const PORT = parseInt(process.env.PORT || '3000', 10);
 
     if (isDevelopment) {
-      enhancedLog("Setting up Vite in development mode...");
+      console.log('Setting up Vite development server...');
       await setupVite(app, server);
     } else {
-      enhancedLog("Setting up static serving for production...");
+      console.log('Setting up static file serving...');
       serveStatic(app);
     }
 
-    const PORT = process.env.PORT || 3000;
-
     server.listen(PORT, () => {
-      enhancedLog(`Server running on port ${PORT}`);
-      startPingService();
+      console.log(`Server running on http://0.0.0.0:${PORT}`);
+    });
+
+    // Graceful shutdown
+    process.on('SIGTERM', () => {
+      console.log('SIGTERM received. Shutting down gracefully...');
+      server.close(() => {
+        console.log('Server closed');
+        process.exit(0);
+      });
     });
 
     return server;
   } catch (error) {
-    enhancedLog(`Error starting server: ${error}`, 'error');
-    if (retryCount < maxRetries) {
-      setTimeout(() => startServer(retryCount + 1, maxRetries), 5000);
-    } else {
-      process.exit(1);
-    }
+    console.error('Failed to start server:', error);
+    process.exit(1);
   }
-};
+}
 
 // Start the server
-enhancedLog("Initializing server...");
 startServer();

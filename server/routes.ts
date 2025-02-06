@@ -2,67 +2,69 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { z } from "zod";
 
-const consultationSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  company: z.string().min(1),
-  phone: z.string().min(10),
-  service: z.string().min(1),
-  message: z.string().min(10),
+// Schema definitions
+const contactSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(10, "Message must be at least 10 characters")
 });
 
-const contactSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  subject: z.string().min(1),
-  message: z.string().min(10),
+const consultationSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  company: z.string().min(1, "Company name is required"),
+  service: z.string().min(1, "Service selection is required"),
+  message: z.string().min(10, "Message must be at least 10 characters")
 });
 
 export function registerRoutes(app: Express): Server {
-  // Consultation booking endpoint
-  app.post("/api/consultation", async (req, res) => {
-    try {
-      const data = consultationSchema.parse(req.body);
-      
-      // Here you would typically:
-      // 1. Save to database
-      // 2. Send notification email
-      // 3. Schedule follow-up
-
-      res.json({
-        success: true,
-        message: "Consultation request received",
-      });
-    } catch (error) {
-      res.status(400).json({
-        success: false,
-        message: "Invalid consultation request",
-      });
-    }
-  });
-
-  // Contact form endpoint
+  // API Routes
   app.post("/api/contact", async (req, res) => {
     try {
       const data = contactSchema.parse(req.body);
-      
-      // Here you would typically:
-      // 1. Save to database
-      // 2. Send notification email
-      // 3. Send auto-response
-
-      res.json({
-        success: true,
-        message: "Message received",
-      });
+      // TODO: Implement contact form handling
+      res.json({ success: true, message: "Message received" });
     } catch (error) {
-      res.status(400).json({
-        success: false,
-        message: "Invalid contact request",
-      });
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          errors: error.errors.map(e => ({
+            field: e.path.join('.'),
+            message: e.message
+          }))
+        });
+      } else {
+        res.status(500).json({ 
+          success: false, 
+          message: "Failed to process contact request" 
+        });
+      }
     }
   });
 
-  const httpServer = createServer(app);
-  return httpServer;
+  app.post("/api/consultation", async (req, res) => {
+    try {
+      const data = consultationSchema.parse(req.body);
+      // TODO: Implement consultation booking
+      res.json({ success: true, message: "Consultation request received" });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          errors: error.errors.map(e => ({
+            field: e.path.join('.'),
+            message: e.message
+          }))
+        });
+      } else {
+        res.status(500).json({ 
+          success: false, 
+          message: "Failed to process consultation request" 
+        });
+      }
+    }
+  });
+
+  return createServer(app);
 }
