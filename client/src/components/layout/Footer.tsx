@@ -9,16 +9,24 @@ export default function Footer() {
           <nav>
             <ul className="flex space-x-6">
               <li>
-                <Link href="/about">About</Link>
+                <div className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <Link href="/about">About</Link>
+                </div>
               </li>
               <li>
-                <Link href="/services">Services</Link>
+                <div className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <Link href="/services">Services</Link>
+                </div>
               </li>
               <li>
-                <Link href="/contact">Contact</Link>
+                <div className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <Link href="/contact">Contact</Link>
+                </div>
               </li>
               <li>
-                <Link href="/consultation">Consultation</Link>
+                <div className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <Link href="/consultation">Consultation</Link>
+                </div>
               </li>
             </ul>
           </nav>
