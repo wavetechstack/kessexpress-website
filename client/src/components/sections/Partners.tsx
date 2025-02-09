@@ -41,8 +41,11 @@ export default function Partners() {
         </div>
         <Carousel
           opts={{
-            align: "start",
+            align: "center",
             loop: true,
+            dragFree: true,
+            skipSnaps: false,
+            containScroll: "trimSnaps"
           }}
           className="w-full max-w-4xl mx-auto"
         >

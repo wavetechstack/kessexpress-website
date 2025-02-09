@@ -128,7 +128,10 @@ export default function Hero() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ 
+                  duration: 1.2,
+                  ease: [0.6, -0.05, 0.01, 0.99]
+                }}
               >
                 <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl leading-[1.3] mb-4">
                   <span className="block mb-4">Transform Your</span>

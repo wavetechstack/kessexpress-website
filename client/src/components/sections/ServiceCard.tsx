@@ -12,8 +12,13 @@ interface ServiceCardProps {
 export default function ServiceCard({ title, description, icon }: ServiceCardProps) {
   return (
     <motion.div
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.2 }}
+      whileHover={{ scale: 1.03, y: -5 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ 
+        type: "spring",
+        stiffness: 400,
+        damping: 17
+      }}
       className="h-full"
     >
       <Card className="hover:shadow-lg transition-shadow h-full flex flex-col">
