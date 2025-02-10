@@ -14,9 +14,9 @@ import Contact from "@/pages/Contact";
 
 function Router() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-1">
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/about" component={About} />
