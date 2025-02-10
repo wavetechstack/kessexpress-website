@@ -92,14 +92,14 @@ export default function Careers() {
 
   if (showApplication) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">
+              <h1 className="text-3xl font-bold text-gray-900">
                 {selectedJob ? `Apply for ${selectedJob.title}` : 'General Application'}
               </h1>
-              <p className="text-muted-foreground mt-2">
+              <p className="text-gray-600 mt-2">
                 {selectedJob ? `${selectedJob.location} • ${selectedJob.type}` : 'Join Our Team'}
               </p>
             </div>
@@ -119,53 +119,53 @@ export default function Careers() {
             <CardContent className="p-6">
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div>
-                  <h2 className="text-xl font-semibold mb-4">Personal Information</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Personal Information</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input id="firstName" name="firstName" required />
+                      <Label htmlFor="firstName" className="text-sm font-medium text-gray-700">First Name</Label>
+                      <Input id="firstName" name="firstName" required className="bg-white" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input id="lastName" name="lastName" required />
+                      <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">Last Name</Label>
+                      <Input id="lastName" name="lastName" required className="bg-white" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" name="email" type="email" required />
+                      <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email</Label>
+                      <Input id="email" name="email" type="email" required className="bg-white" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input id="phone" name="phone" type="tel" required />
+                      <Label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone Number</Label>
+                      <Input id="phone" name="phone" type="tel" required className="bg-white" />
                     </div>
                   </div>
                 </div>
 
-                <Separator />
+                <Separator className="bg-gray-200" />
 
                 <div>
-                  <h2 className="text-xl font-semibold mb-4">Documents</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Documents</h2>
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <Label htmlFor="resume">Resume/CV</Label>
-                      <Input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx" required />
-                      <p className="text-sm text-muted-foreground">
+                      <Label htmlFor="resume" className="text-sm font-medium text-gray-700">Resume/CV</Label>
+                      <Input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx" required className="bg-white" />
+                      <p className="text-sm text-gray-500">
                         Accepted formats: PDF, DOC, DOCX (Max size: 5MB)
                       </p>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="coverLetter">Cover Letter</Label>
+                      <Label htmlFor="coverLetter" className="text-sm font-medium text-gray-700">Cover Letter</Label>
                       <Textarea
                         id="coverLetter"
                         name="coverLetter"
                         placeholder="Tell us why you'd be a great fit..."
-                        className="min-h-[200px]"
+                        className="min-h-[200px] bg-white text-gray-900"
                       />
                     </div>
                   </div>
                 </div>
 
-                <Separator />
+                <Separator className="bg-gray-200" />
 
                 <div className="flex justify-end gap-4">
                   <Button
@@ -175,10 +175,11 @@ export default function Careers() {
                       setShowApplication(false);
                       setSelectedJob(null);
                     }}
+                    className="text-gray-700"
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" className="bg-primary hover:bg-primary/90">
+                  <Button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground">
                     Submit Application
                   </Button>
                 </div>
