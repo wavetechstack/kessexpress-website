@@ -44,6 +44,9 @@ export default function Footer() {
               <Link href="/services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Services
               </Link>
+              <Link href="/careers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Careers
+              </Link>
               <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Contact
               </Link>
