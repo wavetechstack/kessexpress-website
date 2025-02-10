@@ -126,11 +126,13 @@ export default function Careers() {
                         <span className="text-sm text-gray-500">{job.type}</span>
                       </div>
                     </div>
-                    <Button 
-                      className="flex items-center gap-2"
+                    <Button
+                      variant="default"
+                      size="lg"
+                      className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
                       onClick={() => handleApply(job)}
                     >
-                      <Mail className="h-4 w-4" />
+                      <Mail className="h-5 w-5" />
                       Apply Now
                     </Button>
                   </div>
@@ -173,14 +175,16 @@ export default function Careers() {
           <p className="text-gray-600 mb-6">
             We're always looking for talented individuals to join our team. Send us your resume and we'll keep it on file for future opportunities.
           </p>
-          <Button 
-            className="flex items-center gap-2 mx-auto"
+          <Button
+            variant="default"
+            size="lg"
+            className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl mx-auto"
             onClick={() => {
               setSelectedJob(null);
               setIsDrawerOpen(true);
             }}
           >
-            <Mail className="h-4 w-4" />
+            <Mail className="h-5 w-5" />
             Send Your Resume
           </Button>
         </motion.div>
@@ -224,9 +228,9 @@ export default function Careers() {
 
               <div className="space-y-2">
                 <Label htmlFor="coverLetter">Cover Letter</Label>
-                <Textarea 
-                  id="coverLetter" 
-                  name="coverLetter" 
+                <Textarea
+                  id="coverLetter"
+                  name="coverLetter"
                   placeholder="Tell us why you'd be a great fit..."
                   className="min-h-[150px]"
                 />
