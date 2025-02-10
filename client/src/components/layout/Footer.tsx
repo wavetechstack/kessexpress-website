@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Separator } from "../ui/separator";
-import { Facebook, X, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, X, Instagram, Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -56,30 +56,30 @@ export default function Footer() {
           {/* Social Links */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Connect With Us</h3>
-            <div className="flex space-x-4">
+            <div className="flex space-x-6">
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-primary transition-colors transform hover:scale-110"
               >
-                <Facebook className="h-5 w-5" />
+                <Facebook className="h-6 w-6" />
               </a>
               <a
                 href="https://x.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-primary transition-colors transform hover:scale-110"
               >
-                <X className="h-5 w-5" />
+                <X className="h-6 w-6" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-primary transition-colors transform hover:scale-110"
               >
-                <Linkedin className="h-5 w-5" />
+                <Instagram className="h-6 w-6" />
               </a>
             </div>
           </div>
