@@ -2,6 +2,11 @@ import { motion } from "framer-motion";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Mail } from "lucide-react";
+import { useState } from "react";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 const jobs = [
   {
@@ -70,6 +75,22 @@ const jobs = [
 ];
 
 export default function Careers() {
+  const [selectedJob, setSelectedJob] = useState<(typeof jobs)[0] | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleApply = (job: (typeof jobs)[0]) => {
+    setSelectedJob(job);
+    setIsDrawerOpen(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here you would typically handle the form submission
+    // For now, we'll just close the drawer
+    setIsDrawerOpen(false);
+    setSelectedJob(null);
+  };
+
   return (
     <div className="pt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -105,7 +126,10 @@ export default function Careers() {
                         <span className="text-sm text-gray-500">{job.type}</span>
                       </div>
                     </div>
-                    <Button className="flex items-center gap-2">
+                    <Button 
+                      className="flex items-center gap-2"
+                      onClick={() => handleApply(job)}
+                    >
                       <Mail className="h-4 w-4" />
                       Apply Now
                     </Button>
@@ -149,12 +173,72 @@ export default function Careers() {
           <p className="text-gray-600 mb-6">
             We're always looking for talented individuals to join our team. Send us your resume and we'll keep it on file for future opportunities.
           </p>
-          <Button className="flex items-center gap-2 mx-auto">
+          <Button 
+            className="flex items-center gap-2 mx-auto"
+            onClick={() => {
+              setSelectedJob(null);
+              setIsDrawerOpen(true);
+            }}
+          >
             <Mail className="h-4 w-4" />
             Send Your Resume
           </Button>
         </motion.div>
       </div>
+
+      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        <DrawerContent>
+          <form onSubmit={handleSubmit} className="p-6">
+            <DrawerHeader>
+              <DrawerTitle>
+                {selectedJob ? `Apply for ${selectedJob.title}` : 'General Application'}
+              </DrawerTitle>
+            </DrawerHeader>
+
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input id="firstName" name="firstName" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input id="lastName" name="lastName" required />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" name="email" type="email" required />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone Number</Label>
+                <Input id="phone" name="phone" type="tel" required />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="resume">Resume/CV</Label>
+                <Input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx" required />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="coverLetter">Cover Letter</Label>
+                <Textarea 
+                  id="coverLetter" 
+                  name="coverLetter" 
+                  placeholder="Tell us why you'd be a great fit..."
+                  className="min-h-[150px]"
+                />
+              </div>
+            </div>
+
+            <DrawerFooter className="mt-6">
+              <Button type="submit">Submit Application</Button>
+            </DrawerFooter>
+          </form>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }
