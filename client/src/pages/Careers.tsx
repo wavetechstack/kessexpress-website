@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail } from "lucide-react";
+import { Mail, X } from "lucide-react";
 import { useState } from "react";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 
 const jobs = [
   {
@@ -76,20 +76,119 @@ const jobs = [
 
 export default function Careers() {
   const [selectedJob, setSelectedJob] = useState<(typeof jobs)[0] | null>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [showApplication, setShowApplication] = useState(false);
 
   const handleApply = (job: (typeof jobs)[0]) => {
     setSelectedJob(job);
-    setIsDrawerOpen(true);
+    setShowApplication(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Here you would typically handle the form submission
-    // For now, we'll just close the drawer
-    setIsDrawerOpen(false);
+    setShowApplication(false);
     setSelectedJob(null);
   };
+
+  if (showApplication) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">
+                {selectedJob ? `Apply for ${selectedJob.title}` : 'General Application'}
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                {selectedJob ? `${selectedJob.location} • ${selectedJob.type}` : 'Join Our Team'}
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                setShowApplication(false);
+                setSelectedJob(null);
+              }}
+            >
+              <X className="h-6 w-6" />
+            </Button>
+          </div>
+
+          <Card>
+            <CardContent className="p-6">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div>
+                  <h2 className="text-xl font-semibold mb-4">Personal Information</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName">First Name</Label>
+                      <Input id="firstName" name="firstName" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName">Last Name</Label>
+                      <Input id="lastName" name="lastName" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input id="email" name="email" type="email" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input id="phone" name="phone" type="tel" required />
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <h2 className="text-xl font-semibold mb-4">Documents</h2>
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="resume">Resume/CV</Label>
+                      <Input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx" required />
+                      <p className="text-sm text-muted-foreground">
+                        Accepted formats: PDF, DOC, DOCX (Max size: 5MB)
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="coverLetter">Cover Letter</Label>
+                      <Textarea
+                        id="coverLetter"
+                        name="coverLetter"
+                        placeholder="Tell us why you'd be a great fit..."
+                        className="min-h-[200px]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div className="flex justify-end gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setShowApplication(false);
+                      setSelectedJob(null);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" className="bg-primary hover:bg-primary/90">
+                    Submit Application
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-16">
@@ -181,7 +280,7 @@ export default function Careers() {
             className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl mx-auto"
             onClick={() => {
               setSelectedJob(null);
-              setIsDrawerOpen(true);
+              setShowApplication(true);
             }}
           >
             <Mail className="h-5 w-5" />
@@ -189,60 +288,6 @@ export default function Careers() {
           </Button>
         </motion.div>
       </div>
-
-      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        <DrawerContent>
-          <form onSubmit={handleSubmit} className="p-6">
-            <DrawerHeader>
-              <DrawerTitle>
-                {selectedJob ? `Apply for ${selectedJob.title}` : 'General Application'}
-              </DrawerTitle>
-            </DrawerHeader>
-
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" name="firstName" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" name="lastName" required />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" name="email" type="email" required />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" name="phone" type="tel" required />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="resume">Resume/CV</Label>
-                <Input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx" required />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="coverLetter">Cover Letter</Label>
-                <Textarea
-                  id="coverLetter"
-                  name="coverLetter"
-                  placeholder="Tell us why you'd be a great fit..."
-                  className="min-h-[150px]"
-                />
-              </div>
-            </div>
-
-            <DrawerFooter className="mt-6">
-              <Button type="submit">Submit Application</Button>
-            </DrawerFooter>
-          </form>
-        </DrawerContent>
-      </Drawer>
     </div>
   );
 }
