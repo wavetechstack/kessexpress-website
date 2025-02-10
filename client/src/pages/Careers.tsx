@@ -25,6 +25,29 @@ const jobs = [
     ]
   },
   {
+    title: "Cybersecurity Specialist",
+    location: "Hartford, CT",
+    type: "Full-time",
+    description: "We are looking for a skilled Cybersecurity Specialist to ensure appropriate security controls are in place to safeguard applications and platforms within our organization. This role involves coordinating with end-users, engineers, and application owners to manage security processes effectively.",
+    responsibilities: [
+      "Implement and monitor security measures for computer networks and information",
+      "Deploy and configure security infrastructure and applications",
+      "Manage intrusion detection and prevention systems",
+      "Install and maintain firewalls and data encryption programs",
+      "Conduct periodic vulnerability and security audits",
+      "Evaluate Data Loss Prevention across Data-in-Motion, Data-in-Use, and Data-at-Rest",
+      "Provide after-hours network support on a periodic on-call basis"
+    ],
+    requirements: [
+      "Degree in Information Technology or equivalent experience",
+      "Expert knowledge of firewalls, IDS/IPS, VPN, and security tools",
+      "Proficiency in CIS, NIST, and ITIL frameworks",
+      "Strong background in data communications and networking",
+      "Advanced skills in patch management and security analytics",
+      "Required certification within 1 year: CCNA, CCNA Security, or GIAC"
+    ]
+  },
+  {
     title: "IT Support Specialist",
     location: "Houston, TX",
     type: "Full-time",
@@ -90,7 +113,7 @@ export default function Careers() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 mb-6">{job.description}</p>
-                  
+
                   <div className="space-y-6">
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-3">Responsibilities</h4>

@@ -1,0 +1,65 @@
+Description
+Vacancy is in the Metro Hartford Innovation Services Department. Under general supervision, ensures appropriate security controls are in place that will safeguard applications and platforms within the City of Hartford and Hartford Public Schools. Coordinates with end-users, engineers, application owners, and current Metro Hartford Innovation Services support staff to ensure the successful operations management of security processes. Implements, upgrades, and monitors security measures for the protection of the computer networks and information. Deploys, configures, and administers the security infrastructure and application. Plans and implements security measures to protect computer systems, networks and data. Assists staff with designing and implementing safeguards to protect computer and telecommunication systems. Manages and monitors intrusion detection and prevention systems. Installs and uses software, such as firewalls and data encryption programs, to protect sensitive information. Investigates suspected and actual breaches of security and undertake reporting/remedial action as required. Establishes system controls by developing framework for controls and levels of access; recommends improvements. Conducts periodic vulnerability and security audits. Evaluates Data Loss Prevention use cases across Data-in-Motion, Data-in-Use, and Data-at-Rest. Develops and implements policies related to secure hardware and software. Provides after-hours network support on a periodic on-call basis. Performs related work as required.
+
+This is a HMEA union position. The hours of this position are 40 per week and the salary includes 5% in lieu of overtime.
+Knowledge, Skills & Abilities
+The examination will consist of a rating of your training and experience as contained on your application and may include a written test, an oral test, a performance test, or a combination thereof. All parts of the examination, including tests and ratings, will be related to the requirements of the position. The examination will be designed to measure the following:
+
+Knowledge of:
+Troubleshooting firewalls, Intrusion Detection, VPN appliances, vulnerability assessment tools, event and log analysis, security change tracking and other network security systems and devices
+Center for Internet Security (CIS), National Institute for Standards and Technology (NIST), and Information Technology Infrastructure Library (ITIL)
+Data communications and networking
+Firewalls, proxies, SIEM, antivirus, and IDPS concepts
+Malware distribution and technical risk
+Networking protocols and theory
+Skills in:
+Patch management with the ability to deploy patches in a timely manner while understanding business impact
+Analytics and problem-solving with a results-oriented focus
+Project management and organization
+Ability to:
+Devise and enforce Network and OS security policies while balancing the needs of a diverse and dynamic business
+Write scripts at a high level
+Identify and mitigate network vulnerabilities and explain how to avoid them
+Analyze overall network security posture as well as specific events
+Understand and apply new processes, procedures and software tools
+Work in a fast paced and flexible environment, particularly on critical care and on-call duties
+Establish and maintain effective working relationships with stakeholders
+Physical Demands and Working Conditions
+Work is performed primarily in an office environment with some travel to different sites within the City or Hartford Public Schools. Incumbent may be required to work extended hours including evenings and weekends.
+Qualifications
+Open to all applicants who meet the following qualifications:
+
+Graduation from a recognized college or university with a degree in Information Technology;
+
+OR
+
+Two (2) years of work experience in Cyber Security within the last four (4) years.
+
+Licenses; Certifications; Special Requirements:
+One of the following Certifications must be obtained within one (1) year from their date of appointment to the classification:
+
+Cisco Certified Network Associate (CCNA)
+Cisco Certified Network Associate Security Certification (CCNA Security)
+Global Information Assurance Certification (GIAC)
+A COPY OF YOUR DEGREE OR TRANSCRIPT MUST BE SUBMITTED WITH YOUR APPLICATION. A DEGREE OR TRANSCRIPT SUBMITTED WILL BE VERIFIED BY THE HUMAN RESOURCES DEPARTMENT.
+
+HARTFORD RESIDENCY PREFERRED: A completed CITY OF HARTFORD RESIDENCY AFFIDAVIT including proof of residency as indicated on the RESIDENCY AFFIDAVIT may be submitted.
+APPLICATION MUST BE COMPLETED IN ITS ENTIRETY, INCLUDING REQUIRED DOCUMENTATION. APPLICATIONS WITHOUT PROPER DOCUMENTATION SHALL RESULT IN YOUR DISQUALIFICATION FOR THIS POSITION.
+
+
+APPLICATIONS VIA FACSIMILE OR EMAIL ARE NOT ACCEPTED
+
+Other Information
+If selected, you will be required to pass a physical examination administered by a City physician, a drug and alcohol screening, and a background check. If appointed, you will serve 3-12 months of probation. This examination and employment process is subject to all federal, state, and municipal laws, rules and regulations.
+
+INFORMATION CONCERNING THE EXAMINATION AND TESTING PROCESS WILL BE PROVIDED THROUGH EMAIL.
+
+IN ADDITION TO YOUR INBOX, PLEASE BE SURE TO CHECK YOUR JUNK AND SPAM EMAIL FOR ALL RECRUITMENT COMMUNICATION.
+
+
+VETERAN'S PREFERENCE
+Preferential Points may be given to Eligible Veterans. Must submit a Veteran's Preference Form, along with a DD-214 and Disability letter (if applicable) from the Office of Veteran's Affairs.
+The Human Resources Department provides reasonable accommodation to persons with disabilities in accordance with the Americans with Disabilities Act (ADA). If you need an accommodation in the application or testing process, please contact the Human Resources Department.
+
+AN AFFIRMATIVE ACTION/EQUAL OPPORTUNITY EMPLOYER
+The City of Hartford is an equal opportunity/affirmative action employer and strongly encourages the applications of women, minorities, veterans and persons with disabilities.
