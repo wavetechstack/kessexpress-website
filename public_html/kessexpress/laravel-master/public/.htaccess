@@ -15,18 +15,18 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+</IfModule>
 
-    # Enable PHP processing
-    AddHandler application/x-httpd-php .php
+# Enable PHP processing
+AddHandler application/x-httpd-php .php
 
-    # Allow access to the directory
-    <IfModule mod_authz_core.c>
-        Require all granted
-    </IfModule>
+# Allow access to the directory
+<IfModule mod_authz_core.c>
+    Require all granted
 </IfModule>
 
 # PHP settings
@@ -36,3 +36,5 @@
     php_value max_execution_time 300
     php_value max_input_time 300
 </IfModule>
+
+DirectoryIndex index.php
