@@ -1,24 +1,40 @@
+cd ~/public_html
 composer create-project laravel/laravel kessexpress
 cd kessexpress
 ```
 
-### 1.2 Configure Environment
+2. Configure environment file:
 ```env
 APP_NAME=KessExpress
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://kessexpress.com
+APP_URL=https://yourdomain.com
 
-DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=kessexpress
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_database_password
+```
+
+3. Set proper permissions:
+```bash
+chmod -R 755 storage bootstrap/cache
+chown -R your_cpanel_user:your_cpanel_user storage bootstrap/cache
+```
+
+4. Generate application key:
+```bash
+php artisan key:generate
+```
+
+### 1.4 Database Migration
+```bash
+php artisan migrate
 ```
 
 ## 2. Database Migration
-
 ### 2.1 Users Migration
 ```php
 // database/migrations/[timestamp]_create_users_table.php
@@ -54,7 +70,6 @@ class User extends Authenticatable
 ```
 
 ## 3. Component Migration
-
 ### 3.1 Layout Template
 ```php
 <!-- resources/views/layouts/app.blade.php -->
@@ -207,7 +222,6 @@ class User extends Authenticatable
 ```
 
 ## 4. Controller Implementation
-
 ### 4.1 Contact Controller
 ```php
 // app/Http/Controllers/ContactController.php
@@ -234,7 +248,6 @@ class ContactController extends Controller
 ```
 
 ## 5. Form Request Validation
-
 ### 5.1 Contact Form Request
 ```php
 // app/Http/Requests/ContactRequest.php
@@ -257,7 +270,6 @@ class ContactRequest extends FormRequest
 ```
 
 ## 6. Routes Configuration
-
 ```php
 // routes/web.php
 use App\Http\Controllers\ContactController;
@@ -273,7 +285,6 @@ Route::controller(ContactController::class)->group(function () {
 ```
 
 ## 7. Service Providers
-
 ### 7.1 View Composer Service Provider
 ```php
 // app/Providers/ViewComposerServiceProvider.php
@@ -294,7 +305,6 @@ class ViewComposerServiceProvider extends ServiceProvider
 ```
 
 ## 8. Configuration
-
 ### 8.1 Services Configuration
 ```php
 // config/services.php
@@ -311,7 +321,6 @@ return [
 ```
 
 ## 9. AutoSSL and Domain Management
-
 ### 9.1 Domain Configuration
 ```bash
 # Verify domain configuration
