@@ -1,11 +1,31 @@
-# In cPanel Terminal or SSH:
+# Connect via SSH
 cd public_html
 composer create-project laravel/laravel kessexpress
 cd kessexpress
+
+# Set permissions
+chmod -R 755 storage bootstrap/cache
+chown -R $USER:$USER storage bootstrap/cache
+
+# Configure environment
+cp .env.example .env
+php artisan key:generate
 ```
 
-## 4. Configure Environment
-1. Create/edit `.env` file:
+## Method 2: Using File Manager
+1. Download Laravel from https://github.com/laravel/laravel/archive/refs/heads/master.zip
+2. Upload to cPanel:
+   - Go to File Manager
+   - Navigate to public_html
+   - Create folder "kessexpress"
+   - Upload and extract Laravel files
+   - Set permissions:
+     * All directories: 755
+     * All files: 644
+     * storage/ and bootstrap/cache: 775
+
+## After Installation (Both Methods)
+1. Configure .env file with database details:
 ```env
 APP_NAME=KessExpress
 APP_ENV=production
@@ -15,33 +35,14 @@ APP_URL=https://yourdomain.com
 DB_CONNECTION=mysql
 DB_HOST=localhost
 DB_PORT=3306
-DB_DATABASE=kessexpress_db
-DB_USERNAME=your_database_user
-DB_PASSWORD=your_database_password
+DB_DATABASE=[your_database_name]
+DB_USERNAME=[your_database_user]
+DB_PASSWORD=[your_database_password]
 ```
 
-## 5. Set Permissions
-```bash
-# Set directory permissions
-find . -type d -exec chmod 755 {} \;
-
-# Set file permissions
-find . -type f -exec chmod 644 {} \;
-
-# Set storage and bootstrap/cache permissions
-chmod -R 775 storage bootstrap/cache
-```
-
-## 6. Generate Application Key
-```bash
-php artisan key:generate
-```
-
-## 7. Configure Domain
-1. In cPanel:
-   - Go to Domains
-   - Point your domain to: public_html/kessexpress/public
-   - Enable SSL if available
+2. Point domain to Laravel public folder:
+   - Go to "Domains" in cPanel
+   - Set document root to: /public_html/kessexpress/public
 
 ## 8. Run Migrations
 ```bash
