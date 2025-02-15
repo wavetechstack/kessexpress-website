@@ -6,24 +6,34 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Redirect Trailing Slashes...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
-
-    # Handle Front Controller...
+    # Handle Front Controller
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
 
-# Allow access to all files in this directory
-<Files *>
+# Set default PHP handler
+AddHandler application/x-httpd-php .php
+
+# Enable access to the directory
+Options +FollowSymLinks
+Options -MultiViews
+
+# Allow all access
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>
+<IfModule !mod_authz_core.c>
     Order Allow,Deny
     Allow from all
-    Require all granted
-</Files>
-
-<IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "*"
 </IfModule>
+
+# PHP settings
+<IfModule mod_php.c>
+    php_value upload_max_filesize 64M
+    php_value post_max_size 64M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+DirectoryIndex index.php
