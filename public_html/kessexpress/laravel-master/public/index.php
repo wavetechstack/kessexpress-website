@@ -4,6 +4,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
@@ -13,16 +14,41 @@ if (!is_writable(__DIR__.'/../storage')) {
     die('Storage directory is not writable. Please check permissions.');
 }
 
+// Check if bootstrap/cache is writable
+if (!is_writable(__DIR__.'/../bootstrap/cache')) {
+    die('Bootstrap/cache directory is not writable. Please check permissions.');
+}
+
 // Check if vendor directory exists
 if (!file_exists(__DIR__.'/../vendor/autoload.php')) {
     die('Vendor directory not found. Please run "composer install".');
 }
 
-// Register the Composer autoloader...
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+*/
 require __DIR__.'/../vendor/autoload.php';
 
-// Bootstrap Laravel and handle the request...
-(require_once __DIR__.'/../bootstrap/app.php')
-    ->handleRequest(Request::capture());
+/*
+|--------------------------------------------------------------------------
+| Turn On The Lights
+|--------------------------------------------------------------------------
+*/
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+*/
+$kernel = $app->make(Kernel::class);
+
+$response = $kernel->handle(
+    $request = Request::capture()
+)->send();
+
+$kernel->terminate($request, $response);
 
 ?>
