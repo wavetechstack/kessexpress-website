@@ -1,9 +1,3 @@
-# Laravel Implementation Guide for KessExpress
-
-## 1. Project Setup & Initial Configuration
-
-### 1.1 Create Laravel Project
-```bash
 composer create-project laravel/laravel kessexpress
 cd kessexpress
 ```
@@ -315,3 +309,36 @@ return [
     ]
 ];
 ```
+
+## 9. AutoSSL and Domain Management
+
+### 9.1 Domain Configuration
+```bash
+# Verify domain configuration
+dig kessexpress.com
+dig www.kessexpress.com
+```
+
+### 9.2 SSL Management
+1. Remove problematic domains:
+   - Access cPanel > Domains
+   - Remove *.premiumresidential.org entries
+   - Keep only essential domains (kessexpress.com, www.kessexpress.com)
+
+2. Configure DNS:
+   ```
+   Type    Name                  Value
+   A       kessexpress.com      [Server-IP]
+   A       www                  [Server-IP]
+   CNAME   *                    kessexpress.com
+   ```
+
+3. Run AutoSSL:
+   - Wait for DNS propagation (15-30 minutes)
+   - Access SSL/TLS Status
+   - Click "Run AutoSSL"
+   - Monitor certificate generation
+
+4. Verify installation:
+   ```bash
+   curl -vI https://kessexpress.com

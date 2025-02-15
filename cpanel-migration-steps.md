@@ -1,56 +1,3 @@
-# Detailed cPanel Migration Steps
-
-## 1. Export Data from Replit
-
-### 1.1 Database Export
-```bash
-# In Replit's shell:
-pg_dump $DATABASE_URL > kessexpress_backup.sql
-```
-
-### 1.2 Download Application Code
-1. In Replit:
-   - Click the three dots (⋮) menu in top-right
-   - Select "Export"
-   - Click "Download as zip"
-
-### 1.3 Save Environment Variables
-1. In Replit:
-   - Go to "Tools" -> "Secrets"
-   - Copy all environment variables
-   - Save them in a secure text file
-
-## 2. cPanel Setup Steps
-
-### 2.1 Set Up Database
-1. In cPanel:
-   - Click "MySQL® Databases" or "PostgreSQL Databases"
-   - Create a new database named "kessexpress"
-   - Create a database user
-   - Add user to database with all privileges
-   - Save the database credentials
-
-### 2.2 Set Up Node.js
-1. In cPanel:
-   - Go to "Setup Node.js App"
-   - Click "Create Application"
-   - Choose Node.js version 18.x
-   - Set application path: /home/username/public_html/kessexpress
-   - Set application URL: kessexpress.com
-   - Set application startup file: server/index.ts
-   - Set application mode: Production
-
-### 2.3 Upload Application Files
-1. In cPanel File Manager:
-   - Navigate to public_html
-   - Create folder "kessexpress"
-   - Upload your Replit zip file
-   - Extract the contents
-   - Delete the zip file
-
-### 2.4 Configure Application
-1. Create/edit `.env` file:
-```env
 NODE_ENV=production
 PORT=3000
 DATABASE_URL=postgres://username:password@localhost:5432/kessexpress
@@ -132,3 +79,108 @@ If domain doesn't work:
 1. Check DNS propagation
 2. Verify domain configuration in cPanel
 3. Check SSL certificate status
+
+## 9. SSL and DNS Troubleshooting
+
+### 9.1 Fix AutoSSL Errors
+1. Clean up problematic domains:
+   - Remove any incorrect domain entries (e.g., *.premiumresidential.org)
+   - Keep only the domains you need: kessexpress.com, www.kessexpress.com, mail.kessexpress.com
+
+2. Verify DNS Records in cPanel:
+   ```bash
+   # Check current DNS records
+   dig kessexpress.com
+   dig www.kessexpress.com
+   ```
+   The output should show your cPanel server's IP address.
+
+3. Update DNS Zone in cPanel:
+   - Go to "Zone Editor"
+   - Add/Update A records:
+     ```
+     Type  Name                     Value
+     A     kessexpress.com         [Your-Server-IP]
+     A     www.kessexpress.com     [Your-Server-IP]
+     A     mail.kessexpress.com    [Your-Server-IP]
+     ```
+   - Remove any conflicting records
+   - Save changes
+
+4. Clear DNS Cache:
+   ```bash
+   # Windows
+   ipconfig /flushdns
+
+   # Linux
+   sudo systemctl restart systemd-resolved
+
+   # MacOS
+   sudo killall -HUP mDNSResponder
+   ```
+
+5. Verify Domain Resolution:
+   ```bash
+   # Test each domain
+   curl -I https://kessexpress.com
+   curl -I https://www.kessexpress.com
+   curl -I https://mail.kessexpress.com
+   ```
+
+6. Run AutoSSL:
+   - Wait 15-30 minutes after DNS changes
+   - Go to cPanel > SSL/TLS Status
+   - Click "Run AutoSSL"
+   - Check the status for each domain
+
+### 9.2 Troubleshooting
+If AutoSSL still fails:
+1. Verify domain ownership in cPanel
+2. Check for existing SSL certificates
+3. Clear SSL cache if necessary
+4. Ensure proper file permissions
+5. Check error logs in cPanel
+
+### 9.3 Common Error Messages
+
+#### DNS Resolution Errors
+If you see errors like:
+```
+DNS DCv; no local authority; "domain.com" does not resolve to any IP addresses on the internet.
+```
+This means:
+- The domain is not properly configured in DNS
+- The A record is missing or incorrect
+- DNS changes haven't propagated yet
+
+Fix by:
+1. Verifying A records in Zone Editor
+2. Waiting for DNS propagation (15-30 minutes)
+3. Testing with `dig` command
+
+#### Certificate Generation Errors
+If you see:
+```
+The system queried for a temporary file at [path] but the web server returned [error]
+```
+This indicates:
+- Web server configuration issues
+- File permission problems
+- Virtual host misconfiguration
+
+Fix by:
+1. Checking file permissions
+2. Verifying virtual host configuration
+3. Ensuring .well-known directory is accessible
+
+### 9.4 Resolving Premiumresidential.org Issues
+
+If you see errors related to *.premiumresidential.org:
+1. Remove unwanted domain entries:
+   - In cPanel > Domains, find and remove any entries with premiumresidential.org
+   - These are typically residual entries from previous configurations
+
+2. Clean up SSL certificates:
+   ```bash
+   # Check existing certificates
+   ls -la /etc/ssl/certs/
