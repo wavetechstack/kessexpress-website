@@ -1,3 +1,34 @@
+# Check if Composer is installed
+composer --version
+
+# If not installed, you'll need to install it:
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+chmod +x /usr/local/bin/composer
+```
+
+## 3. Directory Permissions
+Required permissions:
+- Public directory: 755
+- Storage directory: 755
+- Bootstrap/cache: 755
+- .env file: 644
+
+## 4. Next Steps
+Based on your environment:
+
+### If Composer is available:
+Use composer to install Laravel (preferred method)
+
+### If Composer is not available:
+Use manual installation via File Manager
+1. Download Laravel
+2. Upload and extract
+3. Configure manually
+
+Please check these requirements and let me know what you find. This will help us determine the best installation method for your setup.
+
+
 cd ~/public_html
 composer create-project laravel/laravel kessexpress
 cd kessexpress
@@ -127,7 +158,7 @@ class User extends Authenticatable
 <x-app-layout>
     <x-hero />
     <x-stats />
-    
+
     <section class="py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -138,10 +169,10 @@ class User extends Authenticatable
                     Comprehensive IT solutions for your business needs
                 </p>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach ($services as $service)
-                    <x-service-card 
+                    <x-service-card
                         :title="$service['title']"
                         :description="$service['description']"
                         :icon="$service['icon']"
