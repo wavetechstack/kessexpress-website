@@ -1,6 +1,6 @@
 <?php
 
-// Enable error display temporarily for debugging
+// Enable error display for debugging
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -43,12 +43,16 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 | Run The Application
 |--------------------------------------------------------------------------
 */
-$kernel = $app->make(Kernel::class);
+try {
+    $kernel = $app->make(Kernel::class);
 
-$response = $kernel->handle(
-    $request = Request::capture()
-)->send();
+    $response = $kernel->handle(
+        $request = Request::capture()
+    )->send();
 
-$kernel->terminate($request, $response);
-
+    $kernel->terminate($request, $response);
+} catch (Exception $e) {
+    error_log($e->getMessage());
+    die('Application Error: ' . $e->getMessage());
+}
 ?>
