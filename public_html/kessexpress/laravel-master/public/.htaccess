@@ -1,37 +1,17 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
-
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Handle Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
-</IfModule>
-
-# Enable PHP processing
+# Basic PHP configuration
 AddHandler application/x-httpd-php .php
 
-# Allow access to the directory
+# Allow access
+Options +FollowSymLinks
+Options -MultiViews
+
+# Enable directory access
 <IfModule mod_authz_core.c>
     Require all granted
 </IfModule>
 <IfModule !mod_authz_core.c>
     Order Allow,Deny
     Allow from all
-</IfModule>
-
-# PHP settings
-<IfModule mod_php.c>
-    php_value upload_max_filesize 64M
-    php_value post_max_size 64M
-    php_value max_execution_time 300
-    php_value max_input_time 300
-    php_flag display_errors On
-    php_value error_reporting E_ALL
 </IfModule>
 
 DirectoryIndex index.php

@@ -68,7 +68,7 @@ try {
     echo "<h3>Testing Table Creation:</h3>";
     $pdo = new PDO($pdoDsn, $dbUser, $dbPass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+
     // Try to create a test table
     $sql = "CREATE TABLE IF NOT EXISTS mysql_test (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -76,7 +76,7 @@ try {
     )";
     $pdo->exec($sql);
     echo "<span style='color:green'>Test table created successfully!</span><br>";
-    
+
     // Clean up - drop the test table
     $pdo->exec("DROP TABLE mysql_test");
     echo "Test table cleaned up successfully.<br>";
@@ -94,5 +94,4 @@ foreach ($extensions as $ext) {
         echo "- " . htmlspecialchars($ext) . "<br>";
     }
 }
-
 ?>

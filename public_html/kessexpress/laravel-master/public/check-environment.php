@@ -106,5 +106,4 @@ echo "<h3>Server Information:</h3>";
 echo "Server Software: " . $_SERVER['SERVER_SOFTWARE'] . "<br>";
 echo "Document Root: " . $_SERVER['DOCUMENT_ROOT'] . "<br>";
 echo "Script Filename: " . $_SERVER['SCRIPT_FILENAME'] . "<br>";
-
 ?>
