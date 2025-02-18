@@ -1,0 +1,29 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /kessexpress/public/
+
+    # Handle Front Controller
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# PHP Settings
+<IfModule mod_php.c>
+    php_value display_errors 1
+    php_value error_reporting E_ALL
+</IfModule>
+
+# Directory Settings
+<IfModule mod_dir.c>
+    DirectoryIndex index.php index.html
+</IfModule>
+
+# Allow from all
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order Allow,Deny
+    Allow from all
+</IfModule>
