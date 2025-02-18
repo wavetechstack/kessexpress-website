@@ -1,54 +1,40 @@
-# Laravel cPanel Update Checklist
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_database_password
+```
 
-## 1. Prepare Updated Files
-- [ ] Download current Laravel project from Replit as ZIP
-- [ ] Ensure `.env.example` has correct MySQL settings
-- [ ] Include all test files (test-db.php, basic-test.php)
+## 5. Set File Permissions
+- [ ] Set directory permissions:
+```bash
+find . -type d -exec chmod 755 {} \;
+```
+- [ ] Set file permissions:
+```bash
+find . -type f -exec chmod 644 {} \;
+```
+- [ ] Set special directory permissions:
+```bash
+chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+```
 
-## 2. Backup Current Installation
-- [ ] In cPanel File Manager, rename existing laravel-master to laravel-master-backup
-- [ ] Download a copy of your current .env file for reference
+## 6. Verification Steps
+- [ ] Run diagnostics:
+  - Access basic-test.php to verify PHP setup
+  - Run check-environment.php for full system status
+  - Test database connection with test-db.php
+- [ ] Verify Laravel functionality:
+  - Check routes are working
+  - Confirm database connections
+  - Test file uploads to storage
 
-## 3. Upload New Files
-- [ ] Upload the new ZIP file to public_html/kessexpress
-- [ ] Extract the ZIP file
-- [ ] Rename extracted folder to laravel-master if needed
-
-## 4. Configuration
-- [ ] Copy your existing .env file to the new installation
-- [ ] Update database credentials if needed:
-  ```env
-  DB_CONNECTION=mysql
-  DB_HOST=localhost
-  DB_PORT=3306
-  DB_DATABASE=your_cpanel_database
-  DB_USERNAME=your_cpanel_username
-  DB_PASSWORD=your_database_password
-  ```
-
-## 5. Set Permissions
-- [ ] Set directory permissions to 755:
-  ```bash
-  find . -type d -exec chmod 755 {} \;
-  ```
-- [ ] Set file permissions to 644:
-  ```bash
-  find . -type f -exec chmod 644 {} \;
-  ```
-- [ ] Make storage and cache writable:
-  ```bash
-  chmod -R 775 storage bootstrap/cache
-  ```
-
-## 6. Verify Installation
-- [ ] Access test-db.php to verify database connection
-- [ ] Check basic-test.php for PHP functionality
-- [ ] Verify Laravel routes are working
-
-## 7. Cleanup
-- [ ] Once everything is working, remove the backup folder
-- [ ] Clear Laravel cache if needed:
-  ```php
-  php artisan cache:clear
-  php artisan config:clear
-  ```
+## 7. Post-Update Tasks
+- [ ] Clear Laravel caches:
+```php
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear

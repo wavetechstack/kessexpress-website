@@ -48,8 +48,8 @@ echo "<h3>Database Connection Test:</h3>";
 try {
     $db_config = parse_ini_file(__DIR__ . '/../.env');
     $host = $db_config['DB_HOST'] ?? 'localhost';
-    $dbname = $db_config['DB_DATABASE'] ?? 'f281vxk316o6_laravel';
-    $username = $db_config['DB_USERNAME'] ?? 'f281vxk316o6_laraveluser';
+    $dbname = $db_config['DB_DATABASE'] ?? 'laravel';
+    $username = $db_config['DB_USERNAME'] ?? 'root';
     $password = $db_config['DB_PASSWORD'] ?? '';
 
     echo "Testing MySQL connection with:<br>";
