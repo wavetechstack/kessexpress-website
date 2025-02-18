@@ -1,11 +1,36 @@
-# Basic PHP configuration
-AddHandler application/x-httpd-php .php
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
 
-# Allow access
-Options +FollowSymLinks
-Options -MultiViews
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-# Enable directory access
+    # Redirect Trailing Slashes...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# PHP Settings
+<IfModule mod_php.c>
+    php_value display_errors 1
+    php_value error_reporting E_ALL
+    php_value log_errors 1
+    php_value error_log /home/f281vxk316o6/public_html/kessexpress/laravel-master/storage/logs/php-errors.log
+</IfModule>
+
+# Directory Settings
+<IfModule mod_dir.c>
+    DirectoryIndex index.php
+</IfModule>
+
+# Allow from all
 <IfModule mod_authz_core.c>
     Require all granted
 </IfModule>
@@ -13,5 +38,3 @@ Options -MultiViews
     Order Allow,Deny
     Allow from all
 </IfModule>
-
-DirectoryIndex index.php

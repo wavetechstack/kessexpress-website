@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-echo "<h2>MySQL Connection Test</h2>";
+echo "<h1>MySQL Connection Test</h1>";
 
 // Load environment variables from .env file
 function loadEnv($path) {
@@ -63,34 +63,14 @@ try {
     echo "<span style='color:red'>MySQLi Connection failed: " . htmlspecialchars($e->getMessage()) . "</span><br>";
 }
 
-// Test creating a table
-try {
-    echo "<h3>Testing Table Creation:</h3>";
-    $pdo = new PDO($pdoDsn, $dbUser, $dbPass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Try to create a test table
-    $sql = "CREATE TABLE IF NOT EXISTS mysql_test (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        test_column VARCHAR(255)
-    )";
-    $pdo->exec($sql);
-    echo "<span style='color:green'>Test table created successfully!</span><br>";
-
-    // Clean up - drop the test table
-    $pdo->exec("DROP TABLE mysql_test");
-    echo "Test table cleaned up successfully.<br>";
-} catch (PDOException $e) {
-    echo "<span style='color:red'>Table operation failed: " . htmlspecialchars($e->getMessage()) . "</span><br>";
-}
-
-echo "<h3>PHP Information:</h3>";
+// Show PHP Configuration
+echo "<h2>PHP Configuration:</h2>";
 echo "PHP Version: " . PHP_VERSION . "<br>";
-echo "Loaded PHP Extensions:<br>";
+echo "Loaded Extensions:<br>";
 $extensions = get_loaded_extensions();
 sort($extensions);
 foreach ($extensions as $ext) {
-    if (strpos($ext, 'mysql') !== false || strpos($ext, 'pdo') !== false) {
+    if (stripos($ext, 'mysql') !== false || stripos($ext, 'pdo') !== false) {
         echo "- " . htmlspecialchars($ext) . "<br>";
     }
 }

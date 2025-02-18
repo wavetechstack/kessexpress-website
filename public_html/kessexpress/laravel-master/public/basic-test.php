@@ -24,7 +24,7 @@ try {
     $dbhost = 'localhost';
     $dbname = 'f281vxk316o6_laravel';
     $dbuser = 'f281vxk316o6_laraveluser';
-    $dbpass = ''; // We'll need to get this from user
+    $dbpass = getenv('DB_PASSWORD');
 
     $mysqli = @new mysqli($dbhost, $dbuser, $dbpass);
     if ($mysqli->connect_error) {
