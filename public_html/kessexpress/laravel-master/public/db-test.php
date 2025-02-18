@@ -3,35 +3,31 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 try {
-    // Database credentials
-    $host = 'localhost';
-    $dbname = 'f281vxk316o6_laravel';
-    $username = 'f281vxk316o6_laraveluser';
-    $password = getenv('DB_PASSWORD');
+    // Database credentials from environment variables
+    $host = getenv('PGHOST');
+    $dbname = getenv('PGDATABASE');
+    $username = getenv('PGUSER');
+    $password = getenv('PGPASSWORD');
+    $port = getenv('PGPORT');
 
-    // Test MySQL connection
-    $mysqli = new mysqli($host, $username, $password, $dbname);
-    
-    if ($mysqli->connect_error) {
-        throw new Exception("Connection failed: " . $mysqli->connect_error);
-    }
-    
-    echo "MySQL Connection Test Results:\n";
+    // Test PostgreSQL connection
+    $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;user=$username;password=$password";
+    $pdo = new PDO($dsn);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    echo "PostgreSQL Connection Test Results:\n";
     echo "Connection successful!\n";
-    echo "Server info: " . $mysqli->server_info . "\n";
-    echo "Host info: " . $mysqli->host_info . "\n";
-    
+    echo "Server info: " . $pdo->getAttribute(PDO::ATTR_SERVER_VERSION) . "\n";
+
     // Test query
-    $result = $mysqli->query("SHOW TABLES");
+    $result = $pdo->query("SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public'");
     if ($result) {
         echo "\nAvailable tables:\n";
-        while ($row = $result->fetch_array()) {
-            echo "- " . $row[0] . "\n";
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            echo "- " . $row['tablename'] . "\n";
         }
     }
-    
-    $mysqli->close();
-    
+
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -57,6 +53,7 @@ foreach ($directories as $name => $path) {
 // Environment information
 echo "\nPHP Environment:\n";
 echo "PHP Version: " . PHP_VERSION . "\n";
+echo "Loaded Extensions: " . implode(', ', get_loaded_extensions()) . "\n";
 echo "Server Software: " . $_SERVER['SERVER_SOFTWARE'] . "\n";
 echo "Document Root: " . $_SERVER['DOCUMENT_ROOT'] . "\n";
 ?>
