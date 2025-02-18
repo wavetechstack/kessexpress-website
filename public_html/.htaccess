@@ -1,0 +1,45 @@
+# Enable PHP error display for debugging
+php_flag display_errors on
+php_value error_reporting E_ALL
+
+# Ensure PHP files are executed
+AddType application/x-httpd-php .php
+
+# Set default character set
+AddDefaultCharset UTF-8
+
+# Allow .htaccess overrides
+Options +FollowSymLinks -MultiViews
+
+# Enable rewrite engine
+RewriteEngine On
+
+# Set PHP settings
+php_value upload_max_filesize 64M
+php_value post_max_size 64M
+php_value max_execution_time 300
+php_value max_input_time 300
+
+# Handle errors
+ErrorDocument 500 "Sorry, there was a server error. Please try again later."
+
+# Set directory permissions
+<Directory "/home/*/public_html">
+    Options -Indexes +FollowSymLinks
+    AllowOverride All
+    Require all granted
+
+    # Set proper file permissions
+    <FilesMatch "\.php$">
+        Require all granted
+    </FilesMatch>
+
+    # Allow access to test files
+    <Files ~ "^(basic-test|info|test-db)\.php$">
+        Require all granted
+    </Files>
+</Directory>
+
+# PHP Error Logging
+php_value error_log /home/username/php_error.log
+php_value log_errors On

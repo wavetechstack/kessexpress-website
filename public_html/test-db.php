@@ -5,10 +5,11 @@ ini_set('display_errors', 1);
 try {
     // Database credentials
     $host = 'localhost';
-    $dbname = 'f281vxk316o6_laravel';
-    $username = 'f281vxk316o6_laraveluser';
-    $password = getenv('DB_PASSWORD');
-    
+    $dbname = isset($_ENV['DB_DATABASE']) ? $_ENV['DB_DATABASE'] : 'your_database_name';
+    $username = isset($_ENV['DB_USERNAME']) ? $_ENV['DB_USERNAME'] : 'your_username';
+    $password = isset($_ENV['DB_PASSWORD']) ? $_ENV['DB_PASSWORD'] : '';
+
+    echo "<h1>MySQL Connection Test</h1>";
     echo "<p>Testing connection to:</p>";
     echo "<ul>";
     echo "<li>Host: " . htmlspecialchars($host) . "</li>";
@@ -18,11 +19,11 @@ try {
 
     // Test MySQL connection
     $mysqli = new mysqli($host, $username, $password, $dbname);
-    
+
     if ($mysqli->connect_error) {
         throw new Exception($mysqli->connect_error);
     }
-    
+
     echo "<div style='color: green; margin: 10px 0;'>";
     echo "✓ MySQL Connection successful!<br>";
     echo "Server version: " . $mysqli->server_info;
@@ -38,7 +39,7 @@ try {
         }
         echo "</ul>";
     }
-    
+
     $mysqli->close();
 
 } catch (Exception $e) {
@@ -48,16 +49,12 @@ try {
 }
 
 // Show PHP Configuration
-echo "<h3>PHP Configuration:</h3>";
-echo "<ul>";
-echo "<li>PHP Version: " . PHP_VERSION . "</li>";
-echo "<li>MySQL Extensions:</li>";
-$extensions = get_loaded_extensions();
-sort($extensions);
-foreach ($extensions as $ext) {
+echo "<h2>PHP Configuration:</h2>";
+echo "PHP Version: " . PHP_VERSION . "<br>";
+echo "Loaded Extensions:<br>";
+foreach (get_loaded_extensions() as $ext) {
     if (stripos($ext, 'mysql') !== false || stripos($ext, 'pdo') !== false) {
-        echo "<li style='margin-left: 20px;'>" . htmlspecialchars($ext) . "</li>";
+        echo "- " . htmlspecialchars($ext) . "<br>";
     }
 }
-echo "</ul>";
 ?>
