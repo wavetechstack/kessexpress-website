@@ -29,10 +29,19 @@ echo "<li>Server Name: " . $_SERVER['SERVER_NAME'] . "</li>";
 echo "<li>Server Protocol: " . $_SERVER['SERVER_PROTOCOL'] . "</li>";
 echo "</ul>";
 
-// Directory Structure
-echo "<h2>Directory Structure</h2>";
+// Laravel Directory Structure
+echo "<h2>Laravel Directory Structure</h2>";
 $baseDir = dirname(__DIR__);
-$criticalDirs = ['storage', 'bootstrap/cache'];
+$criticalDirs = [
+    'storage',
+    'storage/logs',
+    'storage/framework',
+    'storage/framework/cache',
+    'storage/framework/sessions',
+    'storage/framework/views',
+    'bootstrap/cache'
+];
+
 foreach ($criticalDirs as $dir) {
     $path = $baseDir . '/' . $dir;
     echo "<strong>$dir:</strong><br>";
@@ -43,6 +52,20 @@ foreach ($criticalDirs as $dir) {
         echo "- Permissions: " . substr(sprintf('%o', fileperms($path)), -4) . "<br>";
     }
     echo "<br>";
+}
+
+// Try to create test files in critical directories
+echo "<h2>Write Permission Test</h2>";
+foreach ($criticalDirs as $dir) {
+    $path = $baseDir . '/' . $dir;
+    if (file_exists($path)) {
+        $testFile = $path . '/test.txt';
+        $result = @file_put_contents($testFile, 'Test write ' . date('Y-m-d H:i:s'));
+        echo "$dir: " . ($result !== false ? '✓ Write successful' : '✗ Write failed') . "<br>";
+        if (file_exists($testFile)) {
+            unlink($testFile);
+        }
+    }
 }
 
 ?>
