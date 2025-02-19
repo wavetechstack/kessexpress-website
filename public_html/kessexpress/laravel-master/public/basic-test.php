@@ -8,7 +8,7 @@ echo "<h1>Laravel Environment Test</h1>";
 echo "<h2>PHP Environment</h2>";
 echo "<ul>";
 echo "<li>PHP Version: " . PHP_VERSION . "</li>";
-echo "<li>Server Software: " . $_SERVER['SERVER_SOFTWARE'] . "</li>";
+echo "<li>Environment: " . (getenv('DATABASE_URL') ? 'Replit (PostgreSQL)' : 'cPanel (MySQL)') . "</li>";
 echo "<li>Document Root: " . $_SERVER['DOCUMENT_ROOT'] . "</li>";
 echo "</ul>";
 
@@ -45,6 +45,25 @@ if (file_exists($envFile)) {
     echo "✓ .env file exists<br>";
     if (is_readable($envFile)) {
         echo "✓ .env file is readable<br>";
+
+        // Check database configuration
+        $dbConnection = getenv('DB_CONNECTION') ?: 'pgsql';
+        echo "Database Type: " . strtoupper($dbConnection) . "<br>";
+
+        if ($dbConnection === 'pgsql') {
+            $databaseUrl = getenv('DATABASE_URL');
+            echo "PostgreSQL URL: " . ($databaseUrl ? '✓ Set' : '✗ Missing') . "<br>";
+            if ($databaseUrl) {
+                $dbConfig = parse_url($databaseUrl);
+                echo "PostgreSQL Host: " . ($dbConfig['host'] ?? 'Not Set') . "<br>";
+                echo "PostgreSQL Port: " . ($dbConfig['port'] ?? '5432') . "<br>";
+                echo "PostgreSQL Database: " . (ltrim($dbConfig['path'] ?? '', '/')) . "<br>";
+            }
+        } else {
+            echo "MySQL Host: " . (getenv('DB_HOST') ? '✓ Set' : '✗ Missing') . "<br>";
+            echo "MySQL Database: " . (getenv('DB_DATABASE') ? '✓ Set' : '✗ Missing') . "<br>";
+            echo "MySQL Username: " . (getenv('DB_USERNAME') ? '✓ Set' : '✗ Missing') . "<br>";
+        }
     } else {
         echo "⚠ Warning: .env file is not readable<br>";
     }
@@ -52,10 +71,11 @@ if (file_exists($envFile)) {
     echo "⚠ Warning: .env file not found<br>";
 }
 
-// PHP Extensions
+// Required PHP Extensions
 echo "<h2>Required PHP Extensions</h2>";
 $requiredExtensions = [
     'pdo_mysql' => 'PDO MySQL',
+    'pdo_pgsql' => 'PDO PostgreSQL',
     'openssl' => 'OpenSSL',
     'mbstring' => 'Multibyte String',
     'tokenizer' => 'Tokenizer',
@@ -75,24 +95,49 @@ foreach ($requiredExtensions as $ext => $name) {
 }
 echo "</ul>";
 
-// Basic MySQL Test
-echo "<h2>MySQL Test</h2>";
+// Database Connection Test
+echo "<h2>Database Test</h2>";
 try {
-    $dbhost = 'localhost';
-    $dbname = 'f281vxk316o6_laravel';
-    $dbuser = 'f281vxk316o6_laraveluser';
-    $dbpass = getenv('DB_PASSWORD');
+    if (getenv('DATABASE_URL')) {
+        // PostgreSQL Test (Replit)
+        $databaseUrl = getenv('DATABASE_URL');
+        $dbConfig = parse_url($databaseUrl);
 
-    $mysqli = @new mysqli($dbhost, $dbuser, $dbpass);
-    if ($mysqli->connect_error) {
-        echo "MySQL Connect Error: " . $mysqli->connect_error;
+        if ($dbConfig === false) {
+            throw new Exception("Invalid DATABASE_URL format");
+        }
+
+        $host = $dbConfig['host'] ?? 'localhost';
+        $port = $dbConfig['port'] ?? '5432';
+        $dbname = ltrim($dbConfig['path'] ?? '', '/');
+        $user = $dbConfig['user'] ?? '';
+        $pass = $dbConfig['pass'] ?? '';
+
+        $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
+        $pdo = new PDO($dsn, $user, $pass);
+        echo "PostgreSQL Connection: Success<br>";
+        echo "PostgreSQL Version: " . $pdo->getAttribute(PDO::ATTR_SERVER_VERSION);
     } else {
-        echo "MySQL Connection: Success<br>";
-        echo "MySQL Version: " . $mysqli->server_info;
-        $mysqli->close();
+        // MySQL Test (cPanel)
+        $dbhost = getenv('DB_HOST') ?: '127.0.0.1';
+        $dbname = getenv('DB_DATABASE');
+        $dbuser = getenv('DB_USERNAME');
+        $dbpass = getenv('DB_PASSWORD');
+
+        if ($dbname && $dbuser) {
+            $mysqli = @new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+            if ($mysqli->connect_error) {
+                throw new Exception($mysqli->connect_error);
+            }
+            echo "MySQL Connection: Success<br>";
+            echo "MySQL Version: " . $mysqli->server_info;
+            $mysqli->close();
+        } else {
+            echo "MySQL Configuration: Not found (expected in cPanel environment)";
+        }
     }
 } catch (Exception $e) {
-    echo "MySQL Error: " . $e->getMessage();
+    echo "Database Error: " . $e->getMessage();
 }
 
 // PHP Configuration Values

@@ -1,10 +1,29 @@
 DB_CONNECTION=mysql
-DB_HOST=localhost
+DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=your_database_name
 DB_USERNAME=your_database_user
 DB_PASSWORD=your_database_password
 ```
+
+## 2. Environment Variables
+- [ ] Copy .env.cpanel to .env in cPanel
+- [ ] Generate new APP_KEY if needed:
+```bash
+php artisan key:generate
+```
+
+## 3. Database Migration
+- [ ] Back up current PostgreSQL data
+- [ ] Run migrations for MySQL:
+```bash
+php artisan migrate:fresh
+```
+
+## 4. File Structure
+- [ ] Verify correct Laravel directory structure
+- [ ] Ensure proper file permissions
+- [ ] Check storage directory accessibility
 
 ## 5. Set File Permissions
 - [ ] Set directory permissions:
